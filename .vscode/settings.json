@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./Step3-Orchestration/flows"
+    ]
+}

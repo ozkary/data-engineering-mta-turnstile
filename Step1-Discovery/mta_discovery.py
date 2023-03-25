@@ -127,4 +127,4 @@ if __name__ == '__main__':
 # Link files have this format
 # http://web.mta.info/developers/data/nyct/turnstile/turnstile_230318.txt
 # files are published every Sunday format turnstile_yyMMdd.txt
-# python3 mta_discovery.py --url http://web.mta.info/developers/data/nyct/turnstile/turnstile_230318.txt
+# python3 mta_discovery.py --url http://web.mta.info/developers/data/nyct/turnstile/turnstile_230318.txt --prefix turnstile

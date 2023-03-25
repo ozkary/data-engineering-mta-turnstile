@@ -3,9 +3,9 @@
 A very important step in any technical project is to do some infrastructure planning. This is basically defining the technologies to use to successfully deliver our project. Since this is a Data Engineering project, we basically need the following resources:
 
 - VM instance
-    - To host our data pipelines
+    - To host our data pipelines and orchestration
 - Data Lake 
-    - To store the CSV files
+    - To store the CSV or Parquet files
 - Data Warehouse
   - To host the data to make it available to the visualization tools
       
@@ -15,7 +15,7 @@ We are building a cross-cloud platform solution, so we stick with technologies t
 
 ## How to Run it!
 
-**Note: for this runbook, we are using a GCP cloud project.**
+**Note: for this execution plan, we are using a GCP cloud project.**
 
 ### Requirements
 
