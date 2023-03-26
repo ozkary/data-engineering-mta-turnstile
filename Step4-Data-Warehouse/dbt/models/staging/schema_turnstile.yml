@@ -1,0 +1,56 @@
+version: 2
+
+sources:
+    - name: staging
+      #For bigquery:
+      database: ozkary-de-101
+
+      # For postgres:
+      # database: production
+
+      schema: mta_data
+
+      # loaded_at_field: record_loaded_at
+      tables:
+        - name: ext_turnstile
+         # freshness:
+           # error_after: {count: 6, period: hour}
+
+models:
+    - name: stg_turnstile
+      description: >
+        Commuter station gates exits and entries
+      columns:
+          - name: log_id
+            description: Primary key for this table, generated with a concatenation C/A, SCP,UNIT, STATION CREATED
+            tests:
+                - unique:
+                    severity: warn
+                - not_null:
+                    severity: warn
+          - name: boot_id
+            description: foreign key to the booth dimension
+            test:
+               - relationships:
+                  to: ref('dim_booth')
+                  field: boot_id
+                  severity: warn
+          - name: station_id
+            description:  The foreign key to the station dimension
+            test:
+               - relationships:
+                  to: ref('dim_station')
+                  field: station_id
+                  severity: warn
+          - name: scp
+            description: The device address
+          - name: line_name
+            description: The subway line
+          - name: division
+            description: The subway division          
+          - name: created_dt
+            description: The date time for the activity
+          - name: entries
+            description: The number of entries
+          - name: exits
+            description: the number of exits         

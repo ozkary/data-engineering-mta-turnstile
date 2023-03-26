@@ -1,0 +1,6 @@
+version: 2
+
+seeds: 
+  - name: remote_booth_station
+    description: >
+      Provides the remote booth and station lookup information for the MTA subway system

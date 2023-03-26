@@ -12,9 +12,9 @@ from typing import List
 from settings import get_block_name, get_min_date, get_max_date, get_prefix, get_url
 from datetime import timedelta, date
 
-_DEBUG = True
+# _DEBUG = True
 
-# @task(name="write_gcs", description='Write file gcs', log_prints=False)
+@task(name="write_gcs", description='Write file gcs', log_prints=False)
 def write_gcs(local_path: Path, file_name: str, prefix: str) -> None:
     
     """
@@ -33,7 +33,7 @@ def write_gcs(local_path: Path, file_name: str, prefix: str) -> None:
     
     return
 
-# @task(name='write_local', description='Writes the file into a local folder')
+@task(name='write_local', description='Writes the file into a local folder')
 def write_local(df: pd.DataFrame, folder: str, file_path: Path) -> Path:
     """
         Write DataFrame out locally as csv file
@@ -56,7 +56,7 @@ def write_local(df: pd.DataFrame, folder: str, file_path: Path) -> Path:
         
     return file_path
 
-# @task(name='etl_web_to_local', description='Downloads the file in chunks')
+@task(name='etl_web_to_local', description='Downloads the file in chunks')
 def etl_web_to_local(name: str, prefix: str) -> Path:
     """
        Download a file    
@@ -97,7 +97,7 @@ def etl_web_to_local(name: str, prefix: str) -> Path:
 
     return file_path
 
-# @task(name='get_the_file_dates', description='Downloads the file in chunks')
+@task(name='get_the_file_dates', description='Downloads the file in chunks')
 def get_the_file_dates(year: int, month: int, day: int = 1 ) -> List[str]:
     """
         Process all the Sundays of the month
@@ -125,7 +125,7 @@ def get_the_file_dates(year: int, month: int, day: int = 1 ) -> List[str]:
     return date_list
                               
 
-# @task(name='valid_task', description='Validate the tasks input paranmeter')
+@task(name='valid_task', description='Validate the tasks input paranmeter')
 def valid_task(year: int, month: int, day: int = 1) -> bool:
     """
         Validates the input parameters for the request
@@ -144,7 +144,7 @@ def valid_task(year: int, month: int, day: int = 1) -> bool:
     print(f'task request status {isValid} input {year}-{month}')
     return isValid
 
-# @flow(name="DEV - MTA Multiple File Batch Data Flow")
+@flow(name="DEV - MTA Multiple File Batch Data Flow")
 def main_batch_flow(params) -> None:
     """
         Entry point to download the data

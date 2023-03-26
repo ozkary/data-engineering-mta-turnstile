@@ -26,6 +26,27 @@ Based on observations, the following conclusions can be made:
 - The CREATED column is the datetime dimension to enable the morning and afternoon timeframes
 - The ENTRIES column  is the measure for entries
 - The EXITS column is the measure for exits
+- A gate can be identified by using the C/A, SCP and UNIT columns
+
+### Requirements
+
+These observations can be used to define technical requirements that can enable us to deliver a successful project.
+
+- Define the infrastructure requirements to host the technology
+  - Automate the provisioning of the resources using Terraform
+  - Deploy the technology on a cloud platform
+- Define the data orchestration process
+  - On the original pipeline, load the initial data for 2023
+  - Create a data pipeline that runs every week after a new file has been published
+  - Copy the unstructured CSV files into a Data Lake
+- Define a well-structured and optimized model on a Data Warehouse
+  - Keep the source code for the models under source control
+  - Copy the data into the Data Warehouse
+  - Allow access to the Data Warehouse, so visualization tools can consume the data.
+- Create Data Analysis dashboard with the following information
+  - Stations with the high number of exits in the morning hours
+  - Stations with high number of entries in the afternoon hours
+
 
 ## How to Run it!
 

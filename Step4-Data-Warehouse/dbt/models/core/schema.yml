@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: dim_station
+    description: >
+      List of unique stations idefied by station_id.       
+  - name: dim_booth
+    description: >
+      List of unique booth idefied by booth_id.             
+  - name: fact_turnstile
+    description: >
+     Represents the daily entries and exits associated to boths in subway stations

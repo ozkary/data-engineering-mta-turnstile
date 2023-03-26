@@ -13,7 +13,7 @@ Our basic data flow can be defined as the following:
 - Download a CSV file
   - Convert the data into a parquet file
 - Parquet is a columnar storage data file format which is more efficient than CSV.
-- Save the parquet files into the data lake
+- Save the parquet files into the Data Lake
 
 ### Automation
 
@@ -26,6 +26,7 @@ Since the files are available on a weekly basis, we use a batch processing appro
 ### Requiremnts
 - Docker and Docker hub
 - Prefect dependencies and cloud account
+- Data Lake for storage
 
 
 - Open the working directory where the requirements file is located to install the dependencies.
