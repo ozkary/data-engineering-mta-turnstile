@@ -32,4 +32,6 @@ models:
             description: the remote gate name
           - name: booth_name
             description: the station booth
-          
+          - name: station_name
+            description: the station name
+                    

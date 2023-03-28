@@ -25,7 +25,7 @@ def write_gcs(local_path: Path, file_name: str, prefix: str) -> None:
 
     """    
     block_name = get_block_name()
-    gcs_path = f'{prefix}/{file_name}.parquet'
+    gcs_path = f'{prefix}/{file_name}.csv.gz'
     print(f'{block_name} {local_path} {gcs_path}')
     
     gcs_block = GcsBucket.load(block_name)        
@@ -46,17 +46,23 @@ def write_local(df: pd.DataFrame, folder: str, file_path: Path) -> Path:
     path = Path(folder)
     if not os.path.exists(path):
         path.mkdir(parents=True, exist_ok=True)
-        
+
+    df = df.rename(columns={'C/A': 'CA'})            
+    df = df.rename(columns=lambda x: x.strip().replace(' ', ''))    
+    # df = df.rename_axis('row_no').reset_index()
+
     if not os.path.isfile(file_path):
-        df.to_parquet(file_path, compression="gzip", engine='fastparquet')
+        df.to_csv(file_path, compression="gzip")
+        # df.to_parquet(file_path, compression="gzip", engine='fastparquet')
         print('new file', flush=True)
-    else:        
-        df.to_parquet(file_path, compression="gzip", engine='fastparquet', append=True) 
+    else:  
+        df.to_csv(file_path, header=None, compression="gzip", mode="a")          
+        # df.to_parquet(file_path, compression="gzip", engine='fastparquet', append=True) 
         print('chunk appended', flush=True)
         
     return file_path
 
-@task(name='etl_web_to_local', description='Downloads the file in chunks')
+@flow(name='etl_web_to_local', description='Downloads the file in chunks')
 def etl_web_to_local(name: str, prefix: str) -> Path:
     """
        Download a file    
@@ -68,7 +74,7 @@ def etl_web_to_local(name: str, prefix: str) -> Path:
 
     # skip an existent file
     path = f"../../data/"
-    file_path = Path(f"{path}/{name}.parquet")
+    file_path = Path(f"{path}/{name}.csv.gz")
     if os.path.exists(file_path):            
             print(f'{name} already processed')
             return file_path
@@ -98,7 +104,7 @@ def etl_web_to_local(name: str, prefix: str) -> Path:
     return file_path
 
 @task(name='get_the_file_dates', description='Downloads the file in chunks')
-def get_the_file_dates(year: int, month: int, day: int = 1 ) -> List[str]:
+def get_the_file_dates(year: int, month: int, day: int = 1, limit: bool = True ) -> List[str]:
     """
         Process all the Sundays of the month
         Args:
@@ -116,8 +122,8 @@ def get_the_file_dates(year: int, month: int, day: int = 1 ) -> List[str]:
             file_name = f'{year_tag}{curr_date.month:02}{curr_date.day:02}'
             date_list.append(file_name)            
             curr_date = curr_date + timedelta(days=7)
-            # if _DEBUG:
-            #     break
+            if limit:
+                 break
         else:
             # find next week
             days_to_sunday = (5 - curr_date.weekday()) % 7
@@ -152,6 +158,7 @@ def main_batch_flow(params) -> None:
     try:
         year = int(params.year)
         month = int(params.month)
+        limit = params.day != None
         day = 1 if params.day == None else int(params.day)
 
         if not valid_task(year, month, day):        
@@ -159,11 +166,11 @@ def main_batch_flow(params) -> None:
 
         prefix = get_prefix()            
         
-        file_list = get_the_file_dates(year, month, day)        
+        file_list = get_the_file_dates(year, month, day, limit)        
         for file_name in file_list:        
             print(file_name)
             local_file_path = etl_web_to_local(file_name, prefix)        
-            # write_gcs(local_file_path, file_name, prefix)
+            write_gcs(local_file_path, file_name, prefix)
                     
     except Exception as ex:
         print(f"error found {ex}")

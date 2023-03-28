@@ -2,24 +2,26 @@
 
 with turnstile as 
 (
-  select   
-  concat(log."C/A",UNIT) as BOOTH
+  select     
+  CA,
+  UNIT,
   STATION,
-  concat(log."C/A",UNIT,SCP) as REF
+  concat(CA,UNIT,SCP) as REF,
   SCP,
   LINENAME,
   DIVISION,
-  CREATED = concat(log.DATE," ", log.TIME) 
+  concat(log.DATE," ", log.TIME) as CREATED,
   ENTRIES,
   EXITS,
-    row_number() over(partition by log."C/A", UNIT, SCP) as rn
+    row_number() over(partition by CA, UNIT, SCP) as rn
   from {{ source('staging','ext_turnstile') }} as log
   
 )
 select
     -- identifiers
     {{ dbt_utils.generate_surrogate_key(['REF', 'CREATED']) }} as log_id,
-    BOOTH as booth,
+    CA as booth,
+    UNIT as remote,
     STATION as station,
 
     -- unit and line information
@@ -31,7 +33,7 @@ select
     cast(CREATED as timestamp) as created_dt,    
        
     -- measures
-    cast(entries as integer) as entries
+    cast(entries as integer) as entries,
     cast(exits as integer) as exits    
 from turnstile
 where rn = 1

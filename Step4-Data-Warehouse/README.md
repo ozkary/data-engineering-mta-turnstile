@@ -12,17 +12,19 @@ Before we start building tables, we need to first create our models based on our
 
 We are using dbt (data build tools) to build the data analysis resources on BigQuery. With this tool, we can define the lookup, facts and dimensions table in a way that enables us to support a CICD process by rebuilding the project resources and pushing the changes to the cloud hosting environment.
 
-- On the DW, create an external table using the Data Lake folder and parquet files as a source
 - Use dbt as a model tool to create the optimized models
   - Create a seed table to be able to get the source for the lookup values
-  - Create the dimension tables
+    - remote_booth_station
+  - Create an external table using the Data Lake folder and parquet files as a source
+    - ext_turnstile
+  - Create the dimension tables using the lookup values as source
     - dim_station
     - dim_booth
-  - Create the fact table
-    - Fact_turnstile
-  - Partition the table by created_dt and day granularity
-  - Cluster the table by station_id
-  - Join on dimension tables to use references instead of text
+  - Create the fact table using the external table structure
+    - fact_turnstile
+    - Partition the table by created_dt and day granularity
+    - Cluster the table by station_id
+    - Join on dimension tables to use references instead of text
 
 Our data model should look like this:
 
@@ -63,11 +65,18 @@ Our data model should look like this:
          - Use common table expressions to be able to join all the views
      - Add a schema.yml file to describe all the tables
 
+### Lineage 
+
+<img width="780px" src="../images/mta-bdt-lineage.png" alt="ozkary dbt model lineage"/>
+
+
+
 ### dbt Commands on the dbt cloud command line (browser)
 
-- Add the package dependencies in the packages.yml (root folder)   
+-  install dbt and add the package dependencies in the packages.yml (root folder)   
 
 ```
+$ pip install dbt-core dbt-bigquery
 $ dbt deps 
 ```  
   
@@ -83,25 +92,17 @@ $ dbt deps
 $ dbt seed 
 ```
 
-- Run the model
-```
-$ dbt run --m <model.sql>
-```
-
-- Test your data
-```
-$ dbt test
-```
-
-- This command runs the seed, run and test at the same time
-```
-$ dbt build --select <model.sql>
-```
-
 - Builds the model and uses variables to allow for the full dataset to be created
 
 ```
-$ dbt build --select <model.sql> --var 'is_test_run: false'
+$ dbt build --select stg_booth.sql --var 'is_test_run: false'
+$ dbt build --select stg_station.sql --var 'is_test_run: false'
+$ dbt build --select stg_turnstile.sql --var 'is_test_run: false'
+
+$ dbt build --select dim_booth.sql 
+$ dbt build --select dim_station.sql 
+$ dbt build --select fact_turnstile.sql
+
 ```  
 
 - Generate documentation 

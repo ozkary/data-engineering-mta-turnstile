@@ -22,26 +22,16 @@ models:
         Commuter station gates exits and entries
       columns:
           - name: log_id
-            description: Primary key for this table, generated with a concatenation C/A, SCP,UNIT, STATION CREATED
+            description: Primary key for this table, generated with a concatenation CA, SCP,UNIT, STATION CREATED
             tests:
                 - unique:
                     severity: warn
                 - not_null:
                     severity: warn
-          - name: boot_id
-            description: foreign key to the booth dimension
-            test:
-               - relationships:
-                  to: ref('dim_booth')
-                  field: boot_id
-                  severity: warn
-          - name: station_id
-            description:  The foreign key to the station dimension
-            test:
-               - relationships:
-                  to: ref('dim_station')
-                  field: station_id
-                  severity: warn
+          - name: booth
+            description: booth name            
+          - name: station
+            description:  station name            
           - name: scp
             description: The device address
           - name: line_name

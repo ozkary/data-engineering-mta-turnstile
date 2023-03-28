@@ -9,6 +9,7 @@
 with turnstile as (
     select 
         log_id,
+        remote,
         booth,
         station,
         scp,
@@ -22,23 +23,23 @@ with turnstile as (
 
 dim_station as (
     select station_id, station_name from {{ ref('dim_station') }}   
-)
+),
 
 dim_booth as (
-    select booth_id, "remote", booth_name  from {{ ref('dim_zones') }}   
+    select booth_id, remote, booth_name  from {{ ref('dim_booth') }}   
 )
 select 
-    log_id,
-    station_id,
-    booth_id,
-    scp,
-    line_name,
-    division,
-    created_dt,
-    entries,
-    exits
-from turnstile log
+    log.log_id,
+    station.station_id,
+    booth.booth_id,
+    log.scp,
+    log.line_name,
+    log.division,
+    log.created_dt,
+    log.entries,
+    log.exits
+from turnstile as log
 left join dim_station as station
    on log.station = station.station_name
 left join dim_booth as booth
-on log.booth = concat(booth."remote",booth.booth_name)
+on log.remote = booth.remote and log.booth = booth.booth_name 

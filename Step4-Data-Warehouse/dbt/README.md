@@ -41,10 +41,10 @@ $ dbt deps
 - to create the seed tables/lookup with a CSV file
 
 ```
-$ dbt seed 
+$ dbt seed --select remote_booth_station
 ```
 
-- Run the model
+- Run all the models using this pattern
 ```
 $ dbt run --m <model.sql>
 ```

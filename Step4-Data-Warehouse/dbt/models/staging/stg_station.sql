@@ -1,6 +1,6 @@
 {{ config(materialized='view') }}
 
-with booth as 
+with stations as 
 (
   select 
     Station,
@@ -9,9 +9,9 @@ with booth as
 )
 select
     -- identifiers
-    rn as station_id,
+    {{ dbt_utils.generate_surrogate_key(['Station']) }} as station_id,    
     Station as station_name
-from booth
+from stations
 where rn = 1
 
 -- dbt build --m <model.sql> --var 'is_test_run: false'

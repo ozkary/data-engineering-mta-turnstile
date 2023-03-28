@@ -19,8 +19,20 @@ variable "storage_class" {
   type = string
 }
 
-variable "BQ_DATASET" {
+variable "stg_dataset" {
   description = "BigQuery Dataset that raw data (from GCS) will be written to"
   type = string
   default = "mta_data"
+}
+
+variable "prd_dataset" {
+  description = "BigQuery Dataset for storing dbt production models"
+  type = string
+  default = "mta_data_prod"
+}
+
+variable "vm_image" {
+  description = "Base image for your Virtual Machine."
+  type = string
+  default = "ubuntu-os-cloud/ubuntu-2004-lts"
 }

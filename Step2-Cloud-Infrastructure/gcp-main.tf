@@ -42,8 +42,36 @@ resource "google_storage_bucket" "data-lake-bucket" {
 
 # DWH
 # Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_dataset
-resource "google_bigquery_dataset" "dataset" {
-  dataset_id = var.BQ_DATASET
+resource "google_bigquery_dataset" "stg_dataset" {
+  dataset_id = var.stg_dataset
   project    = var.project
   location   = var.region
+}
+
+resource "google_bigquery_dataset" "prd_dataset" {
+  dataset_id = var.prd_dataset
+  project    = var.project
+  location   = var.region
+}
+
+# VM instance
+resource "google_compute_instance" "vm_instance" {
+  name          = "mta-instance"
+  project       = var.project
+  machine_type  = "e2-standard-4"
+  zone          = var.zone
+
+  boot_disk {
+    initialize_params {
+      image = var.vm_image
+    }
+  }
+
+  network_interface {
+    network = "default"
+
+    access_config {
+      // Ephemeral public IP
+    }
+  }
 }
