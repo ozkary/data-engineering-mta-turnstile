@@ -5,7 +5,7 @@ with stations as
   select 
     Station,
     row_number() over(partition by Station) as rn
-  from {{ source('staging','remote_booth_station') }}   
+  from {{ source('staging','ext_turnstile') }}   
 )
 select
     -- identifiers

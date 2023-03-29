@@ -1,0 +1,4 @@
+{{ config(materialized='view') }}
+SELECT *
+FROM 'gs://ozkary_data_lake_ozkary-de-101/turnstile/*.csv.gz'
+

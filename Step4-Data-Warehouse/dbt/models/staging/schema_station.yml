@@ -1,25 +1,13 @@
 version: 2
 
-sources:
-    - name: staging
-      #For bigquery:
-      database: ozkary-de-101
-
-      # For postgres:
-      # database: production
-
-      schema: mta_data
-
-      # loaded_at_field: record_loaded_at
-      tables:
-        - name: remote_booth_station
-         # freshness:
-           # error_after: {count: 6, period: hour}
-
 models:
     - name: stg_station
       description: >
         Subway station names
+      # seed:
+      #   enabled: true
+      #   seed_source:
+      #     remote_booth_station
       columns:
           - name: station_id
             description: The station identifier

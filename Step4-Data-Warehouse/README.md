@@ -20,11 +20,14 @@ We are using dbt (data build tools) to build the data analysis resources on BigQ
   - Create the dimension tables using the lookup values as source
     - dim_station
     - dim_booth
-  - Create the fact table using the external table structure
+       - Cluster by station_id
+    - Add incremental model to insert missing records not on seed table
+  - Create the fact table using the external table structure and an incremental strategy for ongoing new data
     - fact_turnstile
     - Partition the table by created_dt and day granularity
     - Cluster the table by station_id
-    - Join on dimension tables to use references instead of text
+    - Join on dimension tables to use id references instead of text
+    - Continously run this model with an incremental strategy to append new records
 
 Our data model should look like this:
 
@@ -38,6 +41,7 @@ Our data model should look like this:
 
 - dbt account
   - Run the process from dbt cloud 
+  - Or install locally (VM) and run from CLI
 - GitHub account
 - Googl BigQuery resource 
 
@@ -70,13 +74,13 @@ Our data model should look like this:
 <img width="780px" src="../images/mta-bdt-lineage.png" alt="ozkary dbt model lineage"/>
 
 
-
 ### dbt Commands on the dbt cloud command line (browser)
 
 -  install dbt and add the package dependencies in the packages.yml (root folder)   
 
 ```
 $ pip install dbt-core dbt-bigquery
+$ dbt init
 $ dbt deps 
 ```  
   
@@ -92,7 +96,7 @@ $ dbt deps
 $ dbt seed 
 ```
 
-- Builds the model and uses variables to allow for the full dataset to be created
+- Builds the model and uses the variable to allow for the full dataset to be created
 
 ```
 $ dbt build --select stg_booth.sql --var 'is_test_run: false'
@@ -104,6 +108,11 @@ $ dbt build --select dim_station.sql
 $ dbt build --select fact_turnstile.sql
 
 ```  
+
+- Validate the project. There should be no errors
+```
+$ dbt debug
+```
 
 - Generate documentation 
 ```

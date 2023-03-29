@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 *.gz
 data/**
+**/logs/
+**/dbt_packages/
 # C extensions
 *.so
 
@@ -128,3 +130,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+

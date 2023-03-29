@@ -30,7 +30,7 @@ dim_booth as (
 )
 select 
     log.log_id,
-    station.station_id,
+    st.station_id,
     booth.booth_id,
     log.scp,
     log.line_name,
@@ -39,7 +39,14 @@ select
     log.entries,
     log.exits
 from turnstile as log
-left join dim_station as station
-   on log.station = station.station_name
+left join dim_station as st
+   on log.station = st.station_name
 left join dim_booth as booth
 on log.remote = booth.remote and log.booth = booth.booth_name 
+{% if is_incremental() %}
+     -- logic for incremental models this = fact_turnstile table
+    left outer join {{ this }} fact
+        on log.log_id = fact.log_id
+    where fact.log_id is null     
+
+ {% endif %}

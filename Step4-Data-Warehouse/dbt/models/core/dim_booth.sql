@@ -1,4 +1,4 @@
-{{ config(materialized='table',
+{{ config(materialized='incremental',
    cluster_by = "station_id"
  )}}
 
@@ -15,11 +15,18 @@ dim_station as (
     select station_id, station_name from {{ ref('dim_station') }}   
 )
 select 
-    booth_id,
-    remote,
-    booth_name,
-    station_id
+    b.booth_id,
+    b.remote,
+    b.booth_name,
+    st.station_id
 from booth b 
-inner join dim_station s 
-    on b.station_name = s.station_name
+inner join dim_station st 
+    on b.station_name = st.station_name
+{% if is_incremental() %}
+     -- logic for incremental models this = dim_booth table
+    left outer join {{ this }} s
+        on b.booth_id = s.booth_id
+    where s.booth_id is null     
+ {% endif %}
+
 

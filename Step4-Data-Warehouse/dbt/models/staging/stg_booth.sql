@@ -3,17 +3,17 @@
 with booths as 
 (
   select
-    Remote,
-    Booth,
+    UNIT,
+    CA,
     Station,
-    row_number() over(partition by Remote, Booth) as rn
-  from {{ source('staging','remote_booth_station') }}   
+    row_number() over(partition by UNIT, CA) as rn
+  from {{ source('staging','ext_turnstile') }}   
 )
 select
     -- identifiers
-    {{ dbt_utils.generate_surrogate_key(['Remote', 'Booth']) }} as booth_id,
-    Remote as remote,
-    Booth as booth_name,
+    {{ dbt_utils.generate_surrogate_key(['UNIT', 'CA']) }} as booth_id,
+    UNIT as remote,
+    CA as booth_name,
     Station as station_name
 from booths
 where rn = 1

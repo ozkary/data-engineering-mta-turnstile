@@ -1,0 +1,12 @@
+{{
+  config(
+    materialized='external',
+    schema='ext_turnstile',
+    table='ext_turnstile'
+  )
+}}
+
+select *
+from {{ ref('stg_ext_turnstile') }}
+
+

@@ -1,0 +1,42 @@
+version: 2
+
+models: 
+  - name: rpt_turnstile
+    description: >
+     report model for data visualization
+    columns:
+          - name: log_id
+            description: Primary key for this table, generated with a concatenation CA, SCP,UNIT, STATION CREATED            
+            tests:
+                - unique:
+                    severity: warn
+                - not_null:
+                    severity: warn
+          - name: station_name          
+            description:  the station name 
+          - name: booth_name
+            description: the booth name                      
+          - name: scp
+            description: The device address
+          - name: line_name
+            description: The subway line
+          - name: division
+            description: The subway division          
+          - name: created_dt
+            description: The date time for the activity
+            tests:
+                - not_null:
+                    severity: warn
+          - name: entries
+            description: The number of entries
+            tests:
+                - not_null:
+                    severity: warn
+          - name: exits
+            description: the number of exits 
+            tests:
+                - not_null:
+                    severity: warn
+          - name: reported_dt
+            description: The date time for the last reported
+          
