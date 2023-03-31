@@ -1,5 +1,10 @@
 #!/usr/bin/env python
-# coding: utf-8
+# -*- coding: utf-8 -*-
+#
+#  2023 ozkary.com.
+#
+#  MTA turnstile data engineering and analysis
+#
 
 import argparse
 from pathlib import Path
@@ -103,6 +108,17 @@ def etl_web_to_local(name: str, prefix: str) -> Path:
 
     return file_path
 
+@task(name='get_file_date', description='Resolves the last file drop date')    
+def get_file_date(curr_date: date = date.today()) -> str:    
+    if curr_date.weekday() != 5:
+        days_to_sat = (curr_date.weekday() - 5) % 7
+        curr_date = curr_date - timedelta(days=days_to_sat)
+        
+    year_tag = str(curr_date.year)[2:4]
+    file_name = f'{year_tag}{curr_date.month:02}{curr_date.day:02}'
+    return file_name
+
+
 @task(name='get_the_file_dates', description='Downloads the file in chunks')
 def get_the_file_dates(year: int, month: int, day: int = 1, limit: bool = True ) -> List[str]:
     """
@@ -112,7 +128,7 @@ def get_the_file_dates(year: int, month: int, day: int = 1, limit: bool = True )
             month : the selected month 
             day:  the file day
     """
-    date_list = []    
+    date_list = []        
     curr_date = date(year, month, day)    
     while curr_date.month == month and curr_date <= date.today():   
         # print(f'Current date {curr_date}')     
@@ -126,8 +142,8 @@ def get_the_file_dates(year: int, month: int, day: int = 1, limit: bool = True )
                  break
         else:
             # find next week
-            days_to_sunday = (5 - curr_date.weekday()) % 7
-            curr_date = curr_date + timedelta(days=days_to_sunday)
+            days_to_sat = (5 - curr_date.weekday()) % 7
+            curr_date = curr_date + timedelta(days=days_to_sat)
     return date_list
                               
 
@@ -150,23 +166,22 @@ def valid_task(year: int, month: int, day: int = 1) -> bool:
     print(f'task request status {isValid} input {year}-{month}')
     return isValid
 
-@flow(name="MTA Multiple File Batch Data Flow")
-def main_batch_flow(params) -> None:
+
+@flow (name="MTA Batch flow", description="MTA Multiple File Batch Data Flow. Defaults to the last Saturday date")
+def main_flow(year: int = 0 , month: int = 0, day: int = 0, limit_one: bool = True) -> None:
     """
         Entry point to download the data
     """        
     try:
-        year = int(params.year)
-        month = int(params.month)
-        limit = params.day != None
-        day = 1 if params.day == None else int(params.day)
-
-        if not valid_task(year, month, day):        
-            return
-
-        prefix = get_prefix()            
+        # if no params provided, resolve to the last saturday  
+        file_list: List[string] = []
+        if (year == 0):
+            file_dt = get_file_date()
+            file_list.append(file_dt)
+        elif valid_task(year, month, day):                
+            file_list = get_the_file_dates(year, month, day, limit_one)                    
         
-        file_list = get_the_file_dates(year, month, day, limit)        
+        prefix = get_prefix()        
         for file_name in file_list:        
             print(file_name)
             local_file_path = etl_web_to_local(file_name, prefix)        
@@ -186,9 +201,13 @@ if __name__ == '__main__':
     parser.add_argument('--day', required=False, help='File day')        
     args = parser.parse_args()
 
-    main_batch_flow(args)
+    year = int(args.year)
+    month = int(args.month)    
+    day = 1 if args.day == None else int(args.day)
+
+    main_flow(year, month, day)
 
 # Link files have this format
 # http://web.mta.info/developers/data/nyct/turnstile/turnstile_230318.txt
 # files are published every Sunday format turnstile_yyMMdd.txt
-# python3 etl_web_to_gcs.py --year 2023 --month 3 --day 25
+# python3 etl_web_to_gcs.py --year 2023 --month 3 --day 

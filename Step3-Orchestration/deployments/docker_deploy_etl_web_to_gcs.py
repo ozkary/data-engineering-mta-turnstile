@@ -1,10 +1,18 @@
 #!/usr/bin/env python
-# coding: utf-8
+# -*- coding: utf-8 -*-
+#
+#  2023 ozkary.com.
+#
+#  MTA turnstile data engineering and analysis
+#
 
 import argparse
+import sys
+import os
 from prefect.deployments import Deployment
-from etl_web_to_gcs import etl_web_to_gcs
 from prefect.infrastructure.docker import DockerContainer
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'flows'))
+from etl_web_to_gcs import main_flow
 
 def main(params) -> None:
     """Create a prefect deployment"""
@@ -15,7 +23,7 @@ def main(params) -> None:
     docker_block = DockerContainer.load(block_name)
 
     docker_dep = Deployment.build_from_flow(
-        flow=etl_web_to_gcs,
+        flow=main_flow,
         name=deploy_name,
         infrastructure=docker_block
     )

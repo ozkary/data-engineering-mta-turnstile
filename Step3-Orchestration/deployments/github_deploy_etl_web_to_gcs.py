@@ -1,9 +1,15 @@
 #!/usr/bin/env python
-# coding: utf-8
+# -*- coding: utf-8 -*-
+#
+#  2023 ozkary.com.
+#
+#  MTA turnstile data engineering and analysis
+#
+
 
 import argparse
 from prefect.deployments import Deployment
-from etl_web_to_gcs import etl_web_to_gcs
+from etl_web_to_gcs import main_flow
 from prefect.filesystems import GitHub 
 
 def main(params) -> None:
@@ -15,10 +21,10 @@ def main(params) -> None:
     github_block = GitHub.load(block_name)
 
     deployment = Deployment.build_from_flow(
-          flow=etl_web_to_gcs,
+          flow=main_flow,
           name=deploy_name,
           storage=github_block,
-          entrypoint=f"{github_path}/etl_web_to_gcs.py:etl_web_to_gcs")
+          entrypoint=f"{github_path}/etl_web_to_gcs.py:main_flow")
 
     deployment.apply()
 

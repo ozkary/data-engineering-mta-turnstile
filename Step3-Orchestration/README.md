@@ -31,7 +31,9 @@ Since the files are available on a weekly basis, we use a batch processing appro
 
 - Open the working directory where the requirements file is located to install the dependencies.
 
+
 ```
+$ cd Step3*
 $ pip install -r prefect-requirements.txt
 ```
 
@@ -69,6 +71,7 @@ $ cp <path to JSON file> ~/.gcp/credentials.json
 
 ### Install the prefect blocks and install our custom blocks for GCP credentials and GCS access
 ```
+$ prefect cloud login
 $ prefect block register -m prefect_gcp
 $ prefect block ls
 $ cd ./blocks
@@ -91,7 +94,7 @@ $ cd ./blocks
 $ python docker_block.py --block_name=blk-docker-mta-de-101 --image_name=ozkary/prefect:mta-de-101
 ```
 
-### Create the prefect deployments with the docker image
+### Create the prefect deployments with the docker image and start the agent
 ```
 $ cd ./flows
 $ python docker_deploy_etl_web_to_gcs.py --block_name=blk-docker-mta-de-101 --deploy_name=dep-docker-mta-de-101
