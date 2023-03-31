@@ -71,9 +71,12 @@ These observations can be used to define technical requirements that can enable 
   - Keep the source code for the models under source control
   - Copy the data into the Data Warehouse
   - Allow access to the Data Warehouse, so visualization tools can consume the data.
-- Create Data Analysis dashboard with the following information
-  - Stations with the high number of exits in the morning hours
-  - Stations with high number of entries in the afternoon hours
+- Create Data Analysis dashboard with the following information  
+  - Data Analysis dashboard
+  - Identify the time slots for morning and afternoon analysis
+  - Look at the distribution by stations
+  - Look at the daily models
+  - Look at the time slot models
 
 
 ## How to Run it!

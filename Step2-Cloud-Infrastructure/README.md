@@ -19,7 +19,8 @@ We are building a cross-cloud platform solution, so we stick with technologies t
 
 ### Requirements
 
-- Setup your GCP cloud project and service account
+- Setup your GCP cloud project 
+- Create the service account with permissions   
 - Install the GCP SDK
 - Install Terraform
 

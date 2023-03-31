@@ -13,7 +13,7 @@ with turnstile as
   concat(log.DATE," ", log.TIME) as CREATED,
   ENTRIES,
   EXITS,
-    row_number() over(partition by CA, UNIT, SCP) as rn
+    row_number() over(partition by CA, UNIT, SCP, DATE, TIME) as rn
   from {{ source('staging','ext_turnstile') }} as log
   
 )

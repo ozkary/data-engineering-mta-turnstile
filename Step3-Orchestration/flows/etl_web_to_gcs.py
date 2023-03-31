@@ -62,7 +62,7 @@ def write_local(df: pd.DataFrame, folder: str, file_path: Path) -> Path:
         
     return file_path
 
-@flow(name='etl_web_to_local', description='Downloads the file in chunks')
+@flow(name='etl_web_to_local', description='Download MTA File in chunks')
 def etl_web_to_local(name: str, prefix: str) -> Path:
     """
        Download a file    
@@ -150,7 +150,7 @@ def valid_task(year: int, month: int, day: int = 1) -> bool:
     print(f'task request status {isValid} input {year}-{month}')
     return isValid
 
-@flow(name="DEV - MTA Multiple File Batch Data Flow")
+@flow(name="MTA Multiple File Batch Data Flow")
 def main_batch_flow(params) -> None:
     """
         Entry point to download the data
