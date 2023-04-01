@@ -75,7 +75,7 @@ $ prefect cloud login
 $ prefect block register -m prefect_gcp
 $ prefect block ls
 $ cd ./blocks
-$ python gcp_acc_block.py --file_path=~/.gcp/credentials.json --gcp_acc_block_name=blk-gcp-svc-acc
+$ python3 gcp_acc_block.py --file_path=~/.gcp/credentials.json --gcp_acc_block_name=blk-gcp-svc-acc
 $ python3 gcs_block.py --gcp_acc_block_name=blk-gcp-svc-acc --gcs_bucket_name=mta_data_lake --gcs_block_name=blk-gcs-name
 ```
 
@@ -91,13 +91,13 @@ $ docker image push ozkary/prefect:mta-de-101
 ### Create the prefect block with the docker image
 ```
 $ cd ./blocks
-$ python docker_block.py --block_name=blk-docker-mta-de-101 --image_name=ozkary/prefect:mta-de-101
+$ python3 docker_block.py --block_name=blk-docker-mta-de-101 --image_name=ozkary/prefect:mta-de-101
 ```
 
 ### Create the prefect deployments with the docker image and start the agent
 ```
-$ cd ./flows
-$ python docker_deploy_etl_web_to_gcs.py --block_name=blk-docker-mta-de-101 --deploy_name=dep-docker-mta-de-101
+$ cd ./deployments
+$ python3 docker_deploy_etl_web_to_gcs.py --block_name=blk-docker-mta-de-101 --deploy_name=dep-docker-mta-de-101
 $ prefect deployments ls
 $ prefect agent start -q default
 ```

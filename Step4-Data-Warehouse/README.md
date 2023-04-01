@@ -39,11 +39,16 @@ Our data model should look like this:
 
 ### Requirements
 
+**Note: Make sure to run the prefect flows from step 2. That process copy files to the Data Lake.**
+
+- CSV files in the Data Lake
 - dbt account
   - Run the process from dbt cloud 
+  - Link dbt with your Github project
+  - Create schedule job on dbt cloud for every Sunday 9am
   - Or install locally (VM) and run from CLI
 - GitHub account
-- Googl BigQuery resource 
+- Google BigQuery resource 
 
 **Note: Use the dbt folder**
 
@@ -76,19 +81,41 @@ Our data model should look like this:
 
 ### dbt Commands on the dbt cloud command line (browser)
 
--  install dbt and add the package dependencies in the packages.yml (root folder)   
+-  Clone this project
+-  Install dbt and add the package dependencies in the packages.yml (root folder)   
+-  Use dbt init to initialize the project profile to your resources
+   - Set up a dbt profile to connect to your cloud-based data warehouse. This typically involves creating a new profile in your ~/.dbt/profiles.yml file, or editing an existing profile. You should refer to the documentation for your cloud platform to determine the appropriate parameters to include in your profile.
 
 ```
 $ pip install dbt-core dbt-bigquery
 $ dbt init
 $ dbt deps 
 ```  
-  
+- The packages.yml file should have the following dependency
 ```
     packages:
     - package: dbt-labs/dbt_utils
         version: 0.8.0
  ```
+
+- Test your connection by running a dbt command that requires a connection to your cloud-based data warehouse, such as dbt list.
+- Once you have verified that your connection is working, you can use the --profile flag to specify which profile to use for each dbt command. For example, to run dbt using the Analytics profile, you would use the command:
+```
+dbt list --profile Analytics
+```
+- Connect to your Data Warehouse 
+- Create an external table using the Data Lake files as the source with the following script
+
+**Note: This is a BigQuery example**
+
+```
+CREATE OR REPLACE EXTERNAL TABLE mta_data.ext_turnstile
+OPTIONS (
+  format = 'CSV',
+  uris = ['gs://ozkary_data_lake_ozkary-de-101/turnstile/*.csv.gz']  
+);
+
+```
 
 - to create the seed tables/lookup with a CSV file
 
@@ -108,11 +135,20 @@ $ dbt build --select dim_station.sql
 $ dbt build --select fact_turnstile.sql
 
 ```  
+- After runnin these command, the following resources should be in the data warehouse
+
+<img width="380px" src="../images/mta-bigquery-schema.png" alt="ozkary dbt bigquery schema"/>
 
 - Validate the project. There should be no errors
 ```
 $ dbt debug
 ```
+- Run the test 
+```
+$ dbt test
+```
+<img width="780px" src="../images/mta-dbt-test.png" alt="ozkary dbt test results"/>
+
 
 - Generate documentation 
 ```
@@ -123,4 +159,17 @@ $ dbt docs generate
 ```
 $ dbt debug --config-dir
 ```
+- On dbt Cloud setup the dbt schedule job to run every Sunday at 9am
+  - Use the production environment
+  - Use the following command
+```
+dbt run --model fact_turnstile.sql
+```
 
+- After running the cloud job, the log should show the following
+
+**Note: There should be files on the Data Lake for the job to insert any new records. To validate this, run this query from the Data Warehouse**
+
+[Query for New Fact Data](sql/fact_tunstile_incremental.sql)
+
+<img width="780px" src="../images/mta-dbt-job.png" alt="ozkary dbt run results"/>
