@@ -19,14 +19,14 @@ We are building a cross-cloud platform solution, so we stick with technologies t
 
 ### Requirements
 
-[<h4>GCP Configuration Notea</h4>](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Google-Cloud-Configuration-Notes)
+<a target="_gcp" href="https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Google-Cloud-Configuration-Notes"><h4>GCP Configuration Notes</h4></a>
 
 - Setup your GCP cloud project 
   - Cloud Provider account: https://console.cloud.google.com/
   - Create the service account with permissions   
   - Install the GCP SDK
 
-[<h4>Terraform Configuration</h4>](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Terraform-Configuration)
+<a target="_terraform" href="https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Terraform-Configuration"><h4>Terraform Configuration Notes</h4></a>
 
 - Install Terraform
   - https://www.terraform.io/downloads

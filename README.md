@@ -1,8 +1,8 @@
 # Data Engineering - Metropolitan Transportation Authority (MTA) Subway Turnstile Data Analysis
 
-[<h2>Written by Oscar Garcia</h2>](https://www.ozkary.com)
+<a target="_ozkary" href="https://www.ozkary.com"><h2>Written by Oscar Garcia</h2></a>
 
-[<h4>Use this project Wiki for installation and configuration information</h4>](https://github.com/ozkary/data-engineering-mta-turnstile/wiki)
+<a target="_wiki"  href="https://github.com/ozkary/data-engineering-mta-turnstile/wiki"><h4>Use this project Wiki for installation and configuration information</h4></a>
 
 ## Problem Statement
 
