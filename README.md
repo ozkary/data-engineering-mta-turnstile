@@ -1,5 +1,9 @@
 # Data Engineering - Metropolitan Transportation Authority (MTA) Subway Turnstile Data Analysis
 
+[<h2>Written by Oscar Garcia</h2>](https://www.ozkary.com)
+
+[<h4>Use this project Wiki for installation and configuration information</h4>](https://github.com/ozkary/data-engineering-mta-turnstile/wiki)
+
 ## Problem Statement
 
 In the city of New York, must commuter use the Metropolitan Transportation Authority (MTA) subway system for transportation. There are millions of people that use this system; therefore, businesses around the subway stations would like to be able to use Geofencing advertisement to target those commuter or possible consumers and attract them to their business locations at peak hours of the day.
@@ -41,13 +45,17 @@ By looking at the dashboard, the following conclusions can be observed:
 
 With these observations, plans can be made to optimize the marketing campaigns and target users around a geo-fence area and hours of the day with proximity to the corresponding business locations.  
 
+## Architecture
+
+<img width="980px" src="images/mta-architecture.png" alt="ozkary MTA architecture"/>
+
 ## Data Engineering Process
-This project was executed following this process. The details for each of these process steps can be found on the project subdirectories.
+This project was executed following this process. The details for each of these steps can be found on the project subdirectories.
 
 - [Discovery](Step1-Discovery/)
   - Data analysis
   - Define Scope of work
-- [Planning](Step2-Cloud-Infrastructure/)
+- [Infrastructure Planning and Configuration](Step2-Cloud-Infrastructure/)
   - Provision accounts
   - Build Infrastructure
 - [Orchestration Implementation](Step3-Orchestration)
@@ -82,9 +90,5 @@ The following technologies have been used for this project:
 - Prefect Cloud  (Workflow automation)
 - dbt Cloud (Data modeling)
 
-## Architecture
-
-
-ADD-DIAGRAM
 
 

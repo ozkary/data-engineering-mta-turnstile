@@ -83,11 +83,12 @@ These observations can be used to define technical requirements that can enable 
 
 ### Requirements
 
-- Install Python
-- Install Pandas
-- Install Jupyter notebook
+<a target="_python" href="https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Configure-Python-Dependencies">
+Install Python, Pandas and Jupyter notebook
+</a>
 
-Follow these steps to run the analysis
+
+### Follow these steps to run the analysis
 
 - Download a file to look at the data
   - This should create a gz file under the ../data folder

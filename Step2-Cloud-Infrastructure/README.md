@@ -19,10 +19,18 @@ We are building a cross-cloud platform solution, so we stick with technologies t
 
 ### Requirements
 
+[<h4>GCP Configuration Notea</h4>](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Google-Cloud-Configuration-Notes)
+
 - Setup your GCP cloud project 
-- Create the service account with permissions   
-- Install the GCP SDK
+  - Cloud Provider account: https://console.cloud.google.com/
+  - Create the service account with permissions   
+  - Install the GCP SDK
+
+[<h4>Terraform Configuration</h4>](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Terraform-Configuration)
+
 - Install Terraform
+  - https://www.terraform.io/downloads
+
 
 ### Execution
 
@@ -49,6 +57,7 @@ $ nano ~/.bashrc
 
 - Initialize state file (.tfstate) one time run which should create main.tf
 ```
+$ cd ./terraform
 $ terraform init
 ```
 -  Check changes to new infrastructure plan

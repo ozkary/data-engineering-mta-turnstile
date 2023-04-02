@@ -25,12 +25,11 @@ Since the files are available on a weekly basis, we use a batch processing appro
 
 ### Requiremnts
 - Docker and Docker hub
+    - [Install Docker](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Configure-Docker)
 - Prefect dependencies and cloud account
 - Data Lake for storage
 
-
 - Open the working directory where the requirements file is located to install the dependencies.
-
 
 ```
 $ cd Step3*
