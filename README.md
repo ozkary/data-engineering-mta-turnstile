@@ -1,8 +1,15 @@
 # Data Engineering - Metropolitan Transportation Authority (MTA) Subway Turnstile Data Analysis
 
-<a target="_ozkary" href="https://www.ozkary.com"><h2>Written by Oscar Garcia</h2></a>
+<a target="_ozkary" style="font-size:1.5rem;margin-right:20px;" href="https://www.ozkary.com">
+Written by Oscar Garcia
+</a>  <a target="_ozkary" style="font-size:1.5rem" href="https://twitter.com/ozkary">
+Twitter @ozkary
+</a>  
 
-<a target="_wiki"  href="https://github.com/ozkary/data-engineering-mta-turnstile/wiki"><h4>Use this project Wiki for installation and configuration information</h4></a>
+
+<a target="_wiki" style="font-size:1.2rem" href="https://github.com/ozkary/data-engineering-mta-turnstile/wiki">
+Use this project Wiki for installation and configuration information
+</a>
 
 ## Problem Statement
 
@@ -50,7 +57,9 @@ With these observations, plans can be made to optimize the marketing campaigns a
 <img width="980px" src="images/mta-architecture.png" alt="ozkary MTA architecture"/>
 
 ## Data Engineering Process
-This project was executed following this process. The details for each of these steps can be found on the project subdirectories.
+This project was executed following this process. The details for each of these steps can be found in the project subdirectories.
+
+**Note: Follow each link for more details **
 
 - [Discovery](Step1-Discovery/)
   - Data analysis

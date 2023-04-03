@@ -15,7 +15,7 @@ We are using dbt (data build tools) to build the data analysis resources on BigQ
 - Use dbt as a model tool to create the optimized models
   - Create a seed table to be able to get the source for the lookup values
     - remote_booth_station
-  - Create an external table using the Data Lake folder and parquet files as a source
+  - Create an external table using the Data Lake folder and CSV.gz files as a source
     - ext_turnstile
   - Create the dimension tables using the lookup values as source
     - dim_station
@@ -168,8 +168,28 @@ dbt run --model fact_turnstile.sql
 
 - After running the cloud job, the log should show the following
 
-**Note: There should be files on the Data Lake for the job to insert any new records. To validate this, run this query from the Data Warehouse**
-
-[Query for New Fact Data](sql/fact_tunstile_incremental.sql)
-
 <img width="780px" src="../images/mta-dbt-job.png" alt="ozkary dbt run results"/>
+
+**Note: There should be files on the Data Lake for the job to insert any new records. To validate this, run these queries from the Data Warehouse**
+
+```
+-- check station dimension table
+select count(*) from mta_data.dim_station;
+
+-- check booth dimension table
+select count(*) from mta_data.dim_booth;
+
+-- check the fact table
+select count(*) from mta_data.fact_turnstile;
+
+-- check the staging fact data
+select count(*) from mta_data.stg_turnstile;
+```
+
+- To check the weekly new data, we can use this query.
+
+[Query for New Incremental (only) Fact Data](sql/fact_tunstile_incremental.sql)
+
+### Data Policies
+
+The files from the Data Lake have an expiration policy. Files older than two weeks will be drop from storage. This should allow for the process to keep a good performance.

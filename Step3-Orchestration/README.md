@@ -10,14 +10,51 @@ A data pipeline is a workflow with different steps in which some data is extract
 
 Our basic data flow can be defined as the following:
 
-- Download a CSV file
-  - Convert the data into a parquet file
-- Parquet is a columnar storage data file format which is more efficient than CSV.
-- Save the parquet files into the Data Lake
+- Download a CSV text file  
+- Compress the text file and upload in chunks to the data lake
+- The data transformation service picks up the file, identifies new data and inserts into the Data Warehouse.
 
-### Automation
+<img src="../images/mta-data-lake.png" width="650px" alt="ozkary data lake files">
 
-Since the files are available on a weekly basis, we use a batch processing approach to process those files. For that, we create a scheduled job with Prefect, which triggers the job for the selected date. 
+### Initial Data Load
+
+Since we need to load the data for 2023, we need to first run a batch process to load all the previous months of data. The process will not allow for the download of future data files, so an attempt to pass future dates will not be allowed.
+
+Once the deployments is set on Prefect cloud, we can schedule jobs to download the previous months as follows:
+
+This job downloads all the files for Jan 2023. For the following months, we change the month parameter for that month (Feb-2, Mar-3 etc)
+
+```
+$ prefect deployment run dep-docker-mta-de-101 -p "year=2023 month=1"
+```
+
+**Note: This job should be scheduled from Prefect cloud.**
+
+### Weekly Automation
+
+Since the files are available on a weekly basis, we use a batch processing approach to process those files. For that, we create a scheduled job with Prefect, which triggers the job with no parameter, so the flow process the most recent drop date. 
+
+**Note: By not passing any parameters, the code resolves the last drop date and process that file.
+**
+```
+$ prefect deployment run dep-docker-mta-de-101
+```
+
+### Monitor from Prefect Cloud
+
+From Prefect cloud, we can monitor the flows. 
+
+**Note:This is what a flow process looks like in Prefect Cloud.**
+
+<img src="../images/mta-flow-run.png" width="650px" alt="ozkary prefect flow run">
+
+### Weekly Schedule
+
+From Prefect cloud, we can schedule weekly jobs to run every Sunday at 9am to pickup the Saturday files.
+
+<img src="../images/mta-prefect-job.png" width="650px" alt="ozkary prefect job">
+
+<img src="../images/mta-prefect-schedule.png" width="450px" alt="ozkary prefect job">
 
 ## How to Run It
 

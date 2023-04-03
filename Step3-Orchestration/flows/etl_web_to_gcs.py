@@ -174,7 +174,7 @@ def main_flow(year: int = 0 , month: int = 0, day: int = 0, limit_one: bool = Tr
     """        
     try:
         # if no params provided, resolve to the last saturday  
-        file_list: List[string] = []
+        file_list: List[str] = []
         if (year == 0):
             file_dt = get_file_date()
             file_list.append(file_dt)
@@ -205,7 +205,7 @@ if __name__ == '__main__':
     month = int(args.month)    
     day = 1 if args.day == None else int(args.day)
 
-    main_flow(year, month, day)
+    main_flow(year, month, day, False)
 
 # Link files have this format
 # http://web.mta.info/developers/data/nyct/turnstile/turnstile_230318.txt
