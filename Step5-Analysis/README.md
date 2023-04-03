@@ -27,6 +27,10 @@ Once the data is available from the Data Warehouse, the next step is to analyze 
 
 For this analysis and visualization process, we are using lookerstudio.google.com.  Looker is Business Intelligence (BI) tools, which enables users to create dashboards on the data that is being analyzed. It is a no-code tool that can load data models from disparate data sources. 
 
+[Signup for Looker Studio](https://lookerstudio.google.com/)
+
+**Note: Other tools like PowerBI, Tableau can also be used to do the analysis**
+
 ## Data Analysis Conclusions
 
 By looking at the dashboard, the following conclusions can be observed:
