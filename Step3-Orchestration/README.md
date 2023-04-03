@@ -135,10 +135,17 @@ $ python3 docker_block.py --block_name=blk-docker-mta-de-101 --image_name=ozkary
 $ cd ./deployments
 $ python3 docker_deploy_etl_web_to_gcs.py --block_name=blk-docker-mta-de-101 --deploy_name=dep-docker-mta-de-101
 $ prefect deployments ls
+```
+
+### Start the Prefect Agent
+
+The agent should be running for the scheduled deployments can be executed. This is what allows Prefect to download the container and run the code.
+
+```
 $ prefect agent start -q default
 ```
 
 ### Test run the prefect deployments with the docker image
 ```
 $ prefect deployment run dep-docker-mta-de-101 -p "year=2023 month=3 day=25"
-``
+```
