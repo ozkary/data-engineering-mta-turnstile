@@ -14,19 +14,19 @@ Use this project Wiki for installation and configuration information
 
 ## Problem Statement
 
-In the city of New York, must commuter use the Metropolitan Transportation Authority (MTA) subway system for transportation. There are millions of people that use this system; therefore, businesses around the subway stations would like to be able to use Geofencing advertisement to target those commuter or possible consumers and attract them to their business locations at peak hours of the day.
+In the city of New York, commuters use the Metropolitan Transportation Authority (MTA) subway system for transportation. There are millions of people that use this system every day; therefore, businesses around the subway stations would like to be able to use Geofencing advertisement to target those commuters or possible consumers and attract them to their business locations at peak hours of the day.
 
-Geofencing is a location based technology service in which mobile devices’ electronic signal is tracked as it enters or leaves a virtual boundary (geo-fence) on a geographical location, Businesses around those locations would like to use this technology to increase their sales.
+Geofencing is a location based technology service in which mobile devices’ electronic signal is tracked as it enters or leaves a virtual boundary (geo-fence) on a geographical location. Businesses around those locations would like to use this technology to increase their sales.
 
 <img width="780px" src="images/mta-geo-fencing.png" alt="ozkary MTA Geo Fence"/>
 
-The MTA subway system has stations around the city. All the stations are equipped with turnstiles or gates which tracks as each person enters or leaves the   station. MTA prov- ides this information in CSV files, which can be imported into a data warehouse to enable the analytical process and - identify patterns that can enable these businesses to make smart decisions on how to target consumers.
+The MTA subway system has stations around the city. All the stations are equipped with turnstiles or gates which tracks as each person enters or leaves the station. MTA provides this information in CSV files, which can be imported into a data warehouse to enable the analytical process to identify patterns that can enable these businesses to understand how to best target consumers.
 
 ## Analytical Approach
 
 ### Dataset Criteria
 
-We are using the MTA Turnstile data for 2023. Using that data, we can investigate the following criteria:
+We are using the MTA Turnstile data for 2023. Using this data, we can investigate the following criteria:
 
 - Stations with the high number of exits by day and hours
 - Stations with high number of entries by day and hours
@@ -35,7 +35,7 @@ Exits indicates that commuters are arriving to those locations. Entries indicate
 
 ### Data Analysis Criteria
 
-The data can be grouped into stations, date and time of the day. This data is audited in blocks of fours hours apart. This means that there are intervals of 8am to 12pm as an example. We analyze the data into those time block interval to help us understand the best time windows both in the morning and afternoon and station location. This should allow businesses to target a particular geo-fence that is close to their business.
+The data can be grouped into stations, date and time of the day. This data is audited in blocks of fours hours apart. This means that there are intervals of 8am to 12pm as an example. We analyze the data into those time block intervals to help us identify the best times both in the morning and afternoon for each station location. This should allow businesses to target a particular geo-fence that is close to their business.
 
 ## Analysis Results
 
@@ -58,7 +58,7 @@ With these observations, plans can be made to optimize the marketing campaigns a
 <img width="980px" src="images/mta-architecture.png" alt="ozkary MTA architecture"/>
 
 ## Data Engineering Process
-This project was executed following this process. The details for each of these steps can be found in the project subdirectories.
+This project was executed following this process. The details for each of these steps can be found in this project subdirectories.
 
 **Note: Follow each link for more details**
 
@@ -82,7 +82,7 @@ This project was executed following this process. The details for each of these 
     - Identify the filters 
     - Identify the visualizations for distributions and aggregated daily statistics
 
-## Process Brain Storming Diagram
+## Brain Storming Process Diagram
 
 <img width="980px" src="images/mta-brain-storming.png" alt="ozkary MTA brain storming"/>
 
