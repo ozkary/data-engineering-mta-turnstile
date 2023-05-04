@@ -12,6 +12,9 @@ Before we start building tables, we need to first create our models based on our
 
 We are using dbt (data build tools) to build the data analysis resources on BigQuery. With this tool, we can define the lookup, facts and dimensions table in a way that enables us to support a CICD process by rebuilding the project resources and pushing the changes to the cloud hosting environment.
 
+<a target="_dbt" href="https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Configure-dbt-CLI">Read dbt CLI Configuration to use your terminal instead of dbt cloud</a>
+
+
 - Use dbt as a model tool to create the optimized models
   - Create a seed table to be able to get the source for the lookup values
     - remote_booth_station

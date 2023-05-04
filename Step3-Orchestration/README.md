@@ -60,7 +60,7 @@ From Prefect cloud, we can schedule weekly jobs to run every Sunday at 9am to pi
 
 **Note: For this execution plan, we are using Prefect cloud.**
 
-### Requiremnts
+### Requirements
 - Docker and Docker hub
     - [Install Docker](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Configure-Docker)
 - Prefect dependencies and cloud account
@@ -84,7 +84,7 @@ $ cp <path to JSON file> ~/.gcp/credentials.json
 
 ### Create the PREFECT Cloud Account
 - Login with preface cloud to host the blocks and the deployments, view the dashboards
-  - preface cloud login
+  - preface cloud login  or use prefect cloud login -k API_KEY_FROM_PREFECT
     - This creates a key file ~/.prefect/profiles.toml
 - Add a prefect block with the GCP credentials
 - Run terraform plan to get the GCP resource names
