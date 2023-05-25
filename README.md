@@ -39,7 +39,7 @@ The data can be grouped into stations, date and time of the day. This data is au
 
 ## Analysis Results
 
-<img width="980px" src="images/mta-dashboard.png" alt="ozkary MTA dashboard"/>
+![ozkary MTA dashboard](images/mta-dashboard.png)
 
 https://lookerstudio.google.com/reporting/94749e6b-2a1f-4b41-aff6-35c6c33f401e
 
@@ -55,7 +55,7 @@ With these observations, plans can be made to optimize the marketing campaigns a
 
 ## Architecture
 
-<img width="980px" src="images/mta-architecture.png" alt="ozkary MTA architecture"/>
+![ozkary MTA architecture](images/mta-architecture.png)
 
 ## Data Engineering Process
 This project was executed following this process. The details for each of these steps can be found in this project subdirectories.
@@ -65,7 +65,7 @@ This project was executed following this process. The details for each of these 
 - [Discovery](Step1-Discovery/)
   - Data analysis
   - Define Scope of work
-- [Infrastructure Planning and Configuration](Step2-Cloud-Infrastructure/)
+- [Design and Infrastructure Planning](Step2-Cloud-Infrastructure/)
   - Provision accounts
   - Build Infrastructure
 - [Orchestration Implementation](Step3-Orchestration)
@@ -84,7 +84,7 @@ This project was executed following this process. The details for each of these 
 
 ## Brain Storming Process Diagram
 
-<img width="980px" src="images/mta-brain-storming.png" alt="ozkary MTA brain storming"/>
+![ozkary MTA brain storming](images/mta-brain-storming.png)
 
 ## Technologies
 
