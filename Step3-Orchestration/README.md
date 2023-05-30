@@ -14,7 +14,7 @@ Our basic data flow can be defined as the following:
 - Compress the text file and upload in chunks to the data lake
 - The data transformation service picks up the file, identifies new data and inserts into the Data Warehouse.
 
-<img src="../images/mta-data-lake.png" width="650px" alt="ozkary data lake files">
+<img src="../images/mta-data-lake-bucket.png" width="650px" alt="ozkary data lake files">
 
 ### Initial Data Load
 
@@ -115,9 +115,19 @@ $ python3 gcp_acc_block.py --file_path=~/.gcp/credentials.json --gcp_acc_block_n
 $ python3 gcs_block.py --gcp_acc_block_name=blk-gcp-svc-acc --gcs_bucket_name=mta_data_lake --gcs_block_name=blk-gcs-name
 ```
 
+### Check the flow runs from the CLI
+```
+$ prefect block-run ls
+```
+![ozkary-data-engineering-prefec-flow-run](../images/ozkary-data-engineering-design-prefect-flows.png "Data Engineering Process Fundamentals- Prefect Flow Runs")
+
+
 **Ref: https://prefecthq.github.io/prefect-gcp/**
 
 ### Create a docker image and push to DockerHub
+
+> Make sure to run the Docker build command where the Docker file is located or use -f with the file path
+
 ```
 $ docker login --username USER --password PW
 $ docker image build -t ozkary/prefect:mta-de-101 .

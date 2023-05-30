@@ -204,8 +204,9 @@ if __name__ == '__main__':
     year = int(args.year)
     month = int(args.month)    
     day = 1 if args.day == None else int(args.day)
-
-    main_flow(year, month, day, False)
+    # limit to the specific day when it is provided
+    limit = False if args.day == None else True    
+    main_flow(year, month, day, limit)
 
 # Link files have this format
 # http://web.mta.info/developers/data/nyct/turnstile/turnstile_230318.txt
