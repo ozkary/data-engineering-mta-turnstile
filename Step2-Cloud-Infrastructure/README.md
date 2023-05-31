@@ -126,7 +126,15 @@ $ terraform apply -var="project=<your-gcp-project-id>"
 $ terraform destroy
 ```
 
+#### Terraform Lifecyle
+
+![ozkary-data-engineering-terraform-lifecycle](../images/ozkary-data-Engineering-terraform-lifecycle.png "Data Engineering Process - Terraform Lifecycle")
+
+
 ### GitHub Action
+
+> [Configure GitHub Secrets](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/GitHub-Configure-Secrets-for-Build-Actions)
+
 
 This is an example of a GitHub Action workflow YAML file:
 
@@ -151,6 +159,8 @@ jobs:
       uses: hashicorp/setup-terraform@v1
     
     - name: Terraform Init
+       env:        
+        GOOGLE_APPLICATION_CREDENTIALS:  ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
       run: |
         cd Step2-Cloud-Infrastructure/terraform
         terraform init
