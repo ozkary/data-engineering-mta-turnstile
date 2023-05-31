@@ -1,8 +1,14 @@
 # Step 3 Data Orchestration
 
-At this point of the project, we understand the source and structure of the data. We also have provisioned a Data Lake (DL) to store all the files that we need to download. We are ready to orchestrate a data pipeline that can enable us to process multiple files and save them to the DL using a parquet data format. Let’s first review some of these concepts.
+At this point of the project, we understand the source and structure of the data. We also have provisioned a Data Lake (DL) to store all the files that we need to download. We are ready to orchestrate a data pipeline that can enable us to process multiple files and save them to the DL using a compressed or parquet data format. Let’s first review some of these concepts.
 
 A data pipeline is a workflow with different steps in which some data is extracted, processed and stored at another location. The automation, scheduling and monitor of these steps is referred to as orchestration. For this project, we are using Prefect cloud as an orchestration as a service tool.
+
+### Orchestration Tools
+
+> [Prefect cloud](https://www.prefect.io/)
+
+> [Apache Airflow ](https://airflow.apache.org/)
 
 <img src="../images/mta-orchestration.png" width="650px" alt="ozkary data engineering orchestration">
 
@@ -13,6 +19,8 @@ Our basic data flow can be defined as the following:
 - Download a CSV text file  
 - Compress the text file and upload in chunks to the data lake
 - The data transformation service picks up the file, identifies new data and inserts into the Data Warehouse.
+
+> This data integration project fits into the batch processing model. For real-time scenarios, we should use a data streaming technologies like [Apache Kafka](https://kafka.apache.org/)
 
 <img src="../images/mta-data-lake-bucket.png" width="650px" alt="ozkary data lake files">
 
@@ -73,7 +81,7 @@ $ cd Step3*
 $ pip install -r prefect-requirements.txt
 ```
 
-**Note: Make sure to run the terraform script build the datalake and BigQuery resources.**
+> Make sure to run the terraform script to build the VM, datalake and BigQuery resources.
 
 - Copy the GCP credentials to follow this format
 
@@ -83,6 +91,9 @@ $ cp <path to JSON file> ~/.gcp/credentials.json
 ```
 
 ### Create the PREFECT Cloud Account
+
+> API keys can be created from the user profile configuration (click your profile picture)
+> 
 - Login with preface cloud to host the blocks and the deployments, view the dashboards
   - preface cloud login  or use prefect cloud login -k API_KEY_FROM_PREFECT
     - This creates a key file ~/.prefect/profiles.toml
@@ -106,6 +117,9 @@ $ cp <path to JSON file> ~/.gcp/credentials.json
 - Copy the GCP credentials account
 
 ### Install the prefect blocks and install our custom blocks for GCP credentials and GCS access
+
+> Blocks are a secured way to download credentials and secrets that are used by your applications.
+
 ```
 $ prefect cloud login
 $ prefect block register -m prefect_gcp
@@ -158,4 +172,48 @@ $ prefect agent start -q default
 ### Test run the prefect deployments with the docker image
 ```
 $ prefect deployment run dep-docker-mta-de-101 -p "year=2023 month=3 day=25"
+```
+
+### Manual test run can be done from a terminal
+```
+$ python3 etl_web_to_gcs.py --year 2023 --month 5 --day 6
+```
+
+### GitHub Action to build and deploy the Docker image to DockerHub
+
+> [Configure GitHub Secrets](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/GitHub-Configure-Secrets-for-Build-Actions)
+
+```
+
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Build and push Docker image
+      env:        
+        DOCKER_REPOSITORY:  ${{ secrets.DOCKERHUB_USERNAME }}/prefect:mta-de-101
+      run: |
+        docker buildx create --use
+        docker buildx build --push --platform linux/amd64,linux/arm64 -t $DOCKER_REPOSITORY .
+
 ```

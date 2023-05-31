@@ -100,17 +100,22 @@ $ nano ~/.bashrc
 
 - Open the terraform folder in your project
 
+> [Azure Data Lake Configuration](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Terraform-Create-an-Azure-Data-Lake)
+
 - Initialize state file (.tfstate) one time run which should create main.tf
 ```
 $ cd ./terraform
 $ terraform init
 ```
 -  Check changes to new infrastructure plan
+
+> Get the project id from your GCP cloud console
+
 ```  
 $ terraform plan -var="project=<your-gcp-project-id>"
 ```
 
-# Apply the changes
+- Apply the changes
 ```
 $ terraform apply -var="project=<your-gcp-project-id>"
 ```
@@ -119,6 +124,41 @@ $ terraform apply -var="project=<your-gcp-project-id>"
 
 ```
 $ terraform destroy
+```
+
+### GitHub Action
+
+This is an example of a GitHub Action workflow YAML file:
+
+```
+
+name: Terraform Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+    
+    - name: Terraform Init
+      run: |
+        cd Step2-Cloud-Infrastructure/terraform
+        terraform init
+    
+    - name: Terraform Apply
+      run: |
+        cd path/to/terraform/project
+        terraform apply -auto-approve
 ```
 
 

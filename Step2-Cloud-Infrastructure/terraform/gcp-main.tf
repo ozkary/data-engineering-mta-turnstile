@@ -59,7 +59,7 @@ resource "google_compute_instance" "vm_instance" {
   name          = "mta-instance"
   project       = var.project
   machine_type  = "e2-standard-4"
-  zone          = var.zone
+  zone          = var.region
 
   boot_disk {
     initialize_params {
