@@ -36,6 +36,18 @@ Our data model should look like this:
 
 <img width="680px" src="../images/mta-erd.png" alt="ozkary data warehouse ERD"/>
 
+### Why do we use partitions and cluster
+
+- Partitioning is the process of dividing a large table into smaller, more manageable parts based on the specified column . Each partition contains rows that share a common value like a specific date. A partition improves performance and query cost.
+
+- When we run a query in BigQuery, it gets executed by a distributed computing infrastructure that spans multiple machines. Clustering is an optional feature in BigQuery that allows us to organize the data within each partition. The purpose of clustering is to physically arrange data within a partition in a way that is conducive to efficient query processing.
+
+#### SQL Server and Big Query Concept Comparison
+
+- In SQL Server, a clustered index defines the physical order of data in a table. In BigQuery, clustering refers to the organization of data within partitions based on one or more columns. Clustering in BigQuery does not impact the physical storage order like a clustered index in SQL Server.
+
+- Both SQL Server and BigQuery support table partitioning. The purpose is similar, allowing for better data management and performance optimization. 
+
 ## How to Run It
 
 **Note: For this execution plan, we are using dbt cloud and GitHub**
@@ -138,7 +150,7 @@ $ dbt build --select dim_station.sql
 $ dbt build --select fact_turnstile.sql
 
 ```  
-- After runnin these command, the following resources should be in the data warehouse
+- After runnining these command, the following resources should be in the data warehouse
 
 <img width="380px" src="../images/mta-bigquery-schema.png" alt="ozkary dbt bigquery schema"/>
 
