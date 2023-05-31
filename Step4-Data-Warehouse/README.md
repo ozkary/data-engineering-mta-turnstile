@@ -10,7 +10,11 @@ Before we start building tables, we need to first create our models based on our
 
 ## Data Modeling
 
-We are using dbt (data build tools) to build the data analysis resources on BigQuery. With this tool, we can define the lookup, facts and dimensions table in a way that enables us to support a CICD process by rebuilding the project resources and pushing the changes to the cloud hosting environment.
+We are using cloud data build tools (dbt) to build the data analysis resources on BigQuery. With this tool, we can define the lookup, facts and dimensions table in a way that enables us to support a CICD process by rebuilding the project resources and pushing the changes to the cloud hosting environment. Another great tool for data modeling between a data lake and data warehouse is Apache Spark.
+
+> [Use cloud dbt for a SQL like approach](https://www.getdbt.com/)
+
+> [Use Apache Spark when using Python or need data streaming](https://spark.apache.org/)
 
 <a target="_dbt" href="https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Configure-dbt-CLI">Read dbt CLI Configuration to use your terminal instead of dbt cloud</a>
 
@@ -91,8 +95,7 @@ Our data model should look like this:
 
 ### Lineage 
 
-<img width="780px" src="../images/mta-bdt-lineage.png" alt="ozkary dbt model lineage"/>
-
+![ozkary-data-engineering-dbt-model-lineage](../images/mta-bdt-lineage.png "ozkary dbt model lineage")
 
 ### dbt Commands on the dbt cloud command line (browser)
 
@@ -115,6 +118,9 @@ $ dbt deps
 
 - Test your connection by running a dbt command that requires a connection to your cloud-based data warehouse, such as dbt list.
 - Once you have verified that your connection is working, you can use the --profile flag to specify which profile to use for each dbt command. For example, to run dbt using the Analytics profile, you would use the command:
+
+> The profile name is defined in the dbt_project.yml file
+
 ```
 dbt list --profile Analytics
 ```
@@ -153,6 +159,8 @@ $ dbt build --select fact_turnstile.sql
 - After runnining these command, the following resources should be in the data warehouse
 
 <img width="380px" src="../images/mta-bigquery-schema.png" alt="ozkary dbt bigquery schema"/>
+
+> The build command is responsible for compiling and generating the SQL code for your dbt project, while the run command executes that SQL code against your data warehouse. Typically, you would run dbt build first to compile the project, and then run dbt run to execute the compiled code against the database.
 
 - Validate the project. There should be no errors
 ```
