@@ -140,7 +140,7 @@ $ prefect block-run ls
 
 ### Create a docker image and push to DockerHub
 
-> Make sure to run the Docker build command where the Docker file is located or use -f with the file path
+> Make sure to run the Docker build command where the Docker file is located or use -f with the file path. Ensure Docker is also running.
 
 ```
 $ docker login --username USER --password PW
@@ -171,7 +171,7 @@ $ prefect agent start -q default
 
 ### Test run the prefect deployments with the docker image
 ```
-$ prefect deployment run dep-docker-mta-de-101 -p "year=2023 month=3 day=25"
+$ prefect deployment run "MTA Batch flow/dep-docker-mta-de-101" -p "year=2023 month=3 day=25"
 ```
 
 ### Manual test run can be done from a terminal
