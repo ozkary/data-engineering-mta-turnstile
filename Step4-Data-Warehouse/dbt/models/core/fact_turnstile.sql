@@ -1,4 +1,4 @@
-{{ config(materialized='table',
+{{ config(materialized='incremental',
     partition_by={
       "field": "created_dt",
       "data_type": "timestamp",

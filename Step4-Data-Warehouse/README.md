@@ -160,7 +160,7 @@ $ dbt build --select fact_turnstile.sql
 
 <img width="380px" src="../images/mta-bigquery-schema.png" alt="ozkary dbt bigquery schema"/>
 
-> The build command is responsible for compiling and generating the SQL code for your dbt project, while the run command executes that SQL code against your data warehouse. Typically, you would run dbt build first to compile the project, and then run dbt run to execute the compiled code against the database.
+> The build command is responsible for compiling, generating and deploying the SQL code for your dbt project, while the run command executes that SQL code against your data warehouse to update the data. Typically, you would run dbt build first to compile the project, and then run dbt run to execute the compiled code against the database.
 
 - Validate the project. There should be no errors
 ```
@@ -186,7 +186,7 @@ $ dbt debug --config-dir
   - Use the production environment
   - Use the following command
 ```
-dbt run --model fact_turnstile.sql
+$ dbt run --model fact_turnstile.sql
 ```
 
 - After running the cloud job, the log should show the following
