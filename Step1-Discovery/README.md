@@ -114,4 +114,4 @@ $ jupyter notebook
 
 ![ozkary-data-engineering-discovery-donut-chart](../images/ozkary-data-engineering-jupyter-pie-chart.png "ozkary MTA jupyter donut chart")
 
-> [Design and Planning](https://github.com/ozkary/data-engineering-mta-turnstile/tree/main/Step2-Cloud-Infrastructure)
+> 👉 [Design and Planning](https://github.com/ozkary/data-engineering-mta-turnstile/tree/main/Step2-Cloud-Infrastructure)
