@@ -217,3 +217,5 @@ jobs:
         docker buildx build --push --platform linux/amd64,linux/arm64 -t $DOCKER_REPOSITORY .
 
 ```
+
+> 👉 [Data Warehouse and Data Modeling](https://github.com/ozkary/data-engineering-mta-turnstile/tree/main/Step4-Data-Warehouse)

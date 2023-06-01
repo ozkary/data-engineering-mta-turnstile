@@ -216,3 +216,6 @@ select count(*) from mta_data.stg_turnstile;
 ### Data Policies
 
 The files from the Data Lake have an expiration policy. Files older than two weeks will be drop from storage. This should allow for the process to keep a good performance.
+
+
+> 👉 [Data Analyis and Visualization](https://github.com/ozkary/data-engineering-mta-turnstile/tree/main/Step5-Analysis)

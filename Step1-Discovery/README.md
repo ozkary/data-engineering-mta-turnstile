@@ -108,13 +108,10 @@ $ jupyter notebook
     - Click the discovery.ipynb file
       - Or open the file with VSCode and enter the URL when prompted from a kernel url
 
-<img width="650px" src="../images/jupyter-mta.png" alt="ozkary MTA jupyter discovery"/>
-
-<img  width="650px" src="../images/jupyter-browser.png" alt="ozkary MTA jupyter notebook loaded"/>
-
 ![ozkary-data-engineering-jupyter-notebook](../images/jupyter-mta.png "Data Engineering Process - Discovery")
 
 ![ozkary-data-engineering-discovery-query](../images/jupyter-browser.png "ozkary MTA jupyter notebook loaded on the browser")
 
 ![ozkary-data-engineering-discovery-donut-chart](../images/ozkary-data-engineering-jupyter-pie-chart.png "ozkary MTA jupyter donut chart")
 
+> [Design and Planning](https://github.com/ozkary/data-engineering-mta-turnstile/tree/main/Step2-Cloud-Infrastructure)
