@@ -18,6 +18,7 @@ We are using cloud data build tools (dbt) to build the data analysis resources o
 
 <a target="_dbt" href="https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Configure-dbt-CLI">Read dbt CLI Configuration to use your terminal instead of dbt cloud</a>
 
+> Jinja is a text-based template script 
 
 - Use dbt as a model tool to create the optimized models
   - Create a seed table to be able to get the source for the lookup values
