@@ -80,30 +80,24 @@ We are building a cross-cloud platform solution, so we stick with technologies t
 ### Execution
 
 - Refresh service-account's auth-token for this session
-```
+```bash
 $ gcloud auth application-default login
 
 ```
 
 - Set the credentials file on the bash configuration file
-  - Edit the bash file
+  - Add the export line and replace filename-here with your file
 
+```bash
+$ echo export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.gcp/filename-here.json" >> ~/.bashrc && source ~/.bashrc
 ```
-$ nano ~/.bashrc
-```
-
-- Add the export line and replace filename-here with your file
-``` 
- export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.gcp/filename-here.json"
- ```
-- Save the file and exit
 
 - Open the terraform folder in your project
 
 > [Azure Data Lake Configuration](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/Terraform-Create-an-Azure-Data-Lake)
 
-- Initialize state file (.tfstate) one time run which should create main.tf
-```
+- Initialize state file (.tfstate) by running terraform init
+```bash
 $ cd ./terraform
 $ terraform init
 ```
@@ -111,34 +105,38 @@ $ terraform init
 
 > Get the project id from your GCP cloud console
 
-```  
+```bash  
 $ terraform plan -var="project=<your-gcp-project-id>"
 ```
 
 - Apply the changes
-```
+
+```bash
 $ terraform apply -var="project=<your-gcp-project-id>"
 ```
 
 - (Optional) Delete infrastructure after your work, to avoid costs on any running services
 
-```
+```bash
 $ terraform destroy
 ```
 
 #### Terraform Lifecyle
+
 
 ![ozkary-data-engineering-terraform-lifecycle](../images/ozkary-data-Engineering-terraform-lifecycle.png "Data Engineering Process - Terraform Lifecycle")
 
 
 ### GitHub Action
 
+In order to be able to automate the building of infrastructure with GitHub, we need to define the cloud provider token as a secret with GitHub. This can be done by following the steps from this link:
+
 > [Configure GitHub Secrets](https://github.com/ozkary/data-engineering-mta-turnstile/wiki/GitHub-Configure-Secrets-for-Build-Actions)
 
 
-This is an example of a GitHub Action workflow YAML file:
+Once the secret has been configured, we can create a build action script with the cloud provider secret information as shown with this GitHub Action workflow YAML file:
 
-```
+```yml
 
 name: Terraform Deployment
 
