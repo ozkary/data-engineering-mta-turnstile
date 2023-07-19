@@ -8,7 +8,9 @@ A data pipeline is a workflow with different steps in which some data is extract
 
 > [Prefect cloud](https://www.prefect.io/)
 
-> [Apache Airflow ](https://airflow.apache.org/)
+> [Apache Airflow](https://airflow.apache.org/)
+
+> [Apache Spark](https://spark.apache.org/) 
 
 <img src="../images/mta-orchestration.png" width="650px" alt="ozkary data engineering orchestration">
 
@@ -113,7 +115,6 @@ $ cp <path to JSON file> ~/.gcp/credentials.json
     - mta_data    
 - Docker container name after pushing to dockerhub
     - ozkary/prefect:mta-de-101
-
 - Copy the GCP credentials account
 
 ### Install the prefect blocks and install our custom blocks for GCP credentials and GCS access
@@ -128,13 +129,6 @@ $ cd ./blocks
 $ python3 gcp_acc_block.py --file_path=~/.gcp/credentials.json --gcp_acc_block_name=blk-gcp-svc-acc
 $ python3 gcs_block.py --gcp_acc_block_name=blk-gcp-svc-acc --gcs_bucket_name=mta_data_lake --gcs_block_name=blk-gcs-name
 ```
-
-### Check the flow runs from the CLI
-```
-$ prefect block-run ls
-```
-![ozkary-data-engineering-prefec-flow-run](../images/ozkary-data-engineering-design-prefect-flows.png "Data Engineering Process Fundamentals- Prefect Flow Runs")
-
 
 **Ref: https://prefecthq.github.io/prefect-gcp/**
 
@@ -157,7 +151,7 @@ $ python3 docker_block.py --block_name=blk-docker-mta-de-101 --image_name=ozkary
 ### Create the prefect deployments with the docker image and start the agent
 ```
 $ cd ./deployments
-$ python3 docker_deploy_etl_web_to_gcs.py --block_name=blk-docker-mta-de-101 --deploy_name=dep-docker-mta-de-101
+$ python3 docker_deploy_etl_web_to_gcs.py --block_name=blk-docker-mta-de-101 --deploy_name=dep-docker-mta-de-101 --tag mta --work-queue default --cron '0 9 * * 6' 
 $ prefect deployments ls
 ```
 
@@ -178,6 +172,13 @@ $ prefect deployment run "MTA Batch flow/dep-docker-mta-de-101" -p "year=2023 mo
 ```
 $ python3 etl_web_to_gcs.py --year 2023 --month 5 --day 6
 ```
+
+### Check the flow runs from the CLI
+```
+$ prefect flow-run ls
+```
+![ozkary-data-engineering-prefect-flow-run](../images/ozkary-data-engineering-design-prefect-flows.png "Data Engineering Process Fundamentals- Prefect Flow Runs")
+
 
 ### GitHub Action to build and deploy the Docker image to DockerHub
 

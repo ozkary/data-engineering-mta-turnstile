@@ -9,7 +9,7 @@ data/**
 # C extensions
 *.so
 *.txt
-
+azure-data-factory/
 # Distribution / packaging
 .Python
 build/

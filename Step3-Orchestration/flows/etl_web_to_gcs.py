@@ -147,7 +147,7 @@ def get_the_file_dates(year: int, month: int, day: int = 1, limit: bool = True )
     return date_list
                               
 
-@task(name='valid_task', description='Validate the tasks input paranmeter')
+@task(name='valid_task', description='Validate the tasks input parameter')
 def valid_task(year: int, month: int, day: int = 1) -> bool:
     """
         Validates the input parameters for the request
