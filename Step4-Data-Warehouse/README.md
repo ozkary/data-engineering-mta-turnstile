@@ -2,9 +2,9 @@
 
 After defining a data pipeline orchestration process, we need to define how to store the data, so it can become available to visualization and analysis tools. A Data Lake is a great location to store large amounts of data, but it is not designed to allow the reading of information. For that purpose, we need to use a Data Warehouse (DW), which is an Online Analytical Processing (OLAP) tool. 
 
-Unlike the ELT process that is used by Data Lakes, a DW uses the ETL process. This basically mean that the DW should have well-defined and optimized models, so the information can be accessed with great performance. 
+In contrast to the ETL process employed by Data Lakes with Python code, a Data Warehouse (DW) relies on the ETL process. This fundamental distinction emphasizes the need for well-defined and optimized models within the DW, enabling efficient data access and exceptional performance.
 
-Before we start building tables, we need to first create our models based on our initial analysis and requirements. We would like to use a tool that enable us to build our models in a way that it can be automated, testable and repeatable. Once we add, this process into our project, our architecture should now look as follows:
+Before proceeding with table construction, our initial focus is on creating precise data models based on thorough analysis and specific requirements. To achieve this, we aim to leverage a tool that facilitates model development in an automated, testable, and repeatable manner. By incorporating such tools into our project, our architecture evolves to the following:
 
 <img width="780px" src="../images/mta-data-warehouse.png" alt="ozkary data warehouse architecture"/>
 
@@ -20,24 +20,28 @@ We are using cloud data build tools (dbt) to build the data analysis resources o
 
 > Jinja is a text-based template script 
 
-- Use dbt as a model tool to create the optimized models
-  - Create a seed table to be able to get the source for the lookup values
-    - remote_booth_station
-  - Create an external table using the Data Lake folder and CSV.gz files as a source
-    - ext_turnstile
-  - Create the dimension tables using the lookup values as source
-    - dim_station
-    - dim_booth
-       - Cluster by station_id
-    - Add incremental model to insert missing records not on seed table
-  - Create the fact table using the external table structure and an incremental strategy for ongoing new data
-    - fact_turnstile
+To build our models, we should follow these specifications:
+
+- Create an external table using the Data Lake folder and *.csv.gz file pattern as a source
+  - ext_turnstile
+- Create the staging models
+  - Create the station view (stg_station) from the external table as source
+    - Get the unique stations 
+    - Create a surrogate key using the station name    
+  - Create the booth view (stg_booth) from the external table as source
+    - Get the unique booths and associate to the station id
+    - Create a surrogate key using the booth unit and ca fields    
+- Create the physical models
+  - Create the station dimension table (dim_station) from the stg_station model    
+  - Create the booth dimension table (dim_booth) from the stg_booth model    
+    - Cluster the table by station_id  
+  - Create the fact table (fact_turnstile) using the external table structure and an incremental strategy for ongoing new data    
     - Partition the table by created_dt and day granularity
     - Cluster the table by station_id
     - Join on dimension tables to use id references instead of text
-    - Continously run this model with an incremental strategy to append new records
+  - Continuously run all the model with an incremental strategy to append new records
 
-Our data model should look like this:
+Our physical data model should look like this:
 
 <img width="680px" src="../images/mta-erd.png" alt="ozkary data warehouse ERD"/>
 
@@ -105,13 +109,13 @@ Our data model should look like this:
 -  Use dbt init to initialize the project profile to your resources
    - Set up a dbt profile to connect to your cloud-based data warehouse. This typically involves creating a new profile in your ~/.dbt/profiles.yml file, or editing an existing profile. You should refer to the documentation for your cloud platform to determine the appropriate parameters to include in your profile.
 
-```
+```bash
 $ pip install dbt-core dbt-bigquery
 $ dbt init
 $ dbt deps 
 ```  
 - The packages.yml file should have the following dependency
-```
+```bash
     packages:
     - package: dbt-labs/dbt_utils
         version: 0.8.0
@@ -122,15 +126,17 @@ $ dbt deps
 
 > The profile name is defined in the dbt_project.yml file
 
-```
+```bash
 dbt list --profile Analytics
 ```
 - Connect to your Data Warehouse 
 - Create an external table using the Data Lake files as the source with the following script
 
+When this file is executed and the external table is created, the data warehouse retrieves the metadata about the external data, such as the schema, column names, and data types, without actually moving the data into the data warehouse storage. Once the external table is created, we can query the data using SQL as if it were a regular table. 
+
 **Note: This is a BigQuery example**
 
-```
+```sql
 CREATE OR REPLACE EXTERNAL TABLE mta_data.ext_turnstile
 OPTIONS (
   format = 'CSV',
@@ -141,13 +147,13 @@ OPTIONS (
 
 - to create the seed tables/lookup with a CSV file
 
-```
+```bash
 $ dbt seed 
 ```
 
 - Builds the model and uses the variable to allow for the full dataset to be created
 
-```
+```bash
 $ dbt build --select stg_booth.sql --var 'is_test_run: false'
 $ dbt build --select stg_station.sql --var 'is_test_run: false'
 $ dbt build --select stg_turnstile.sql --var 'is_test_run: false'
@@ -164,29 +170,29 @@ $ dbt build --select fact_turnstile.sql
 > The build command is responsible for compiling, generating and deploying the SQL code for your dbt project, while the run command executes that SQL code against your data warehouse to update the data. Typically, you would run dbt build first to compile the project, and then run dbt run to execute the compiled code against the database.
 
 - Validate the project. There should be no errors
-```
+```bash
 $ dbt debug
 ```
 - Run the test 
-```
+```bash
 $ dbt test
 ```
 <img width="780px" src="../images/mta-dbt-test.png" alt="ozkary dbt test results"/>
 
 
 - Generate documentation 
-```
+```bash
 $ dbt docs generate
 ```
 
 - To see the project folder configuration
-```
+```bash
 $ dbt debug --config-dir
 ```
 - On dbt Cloud setup the dbt schedule job to run every Sunday at 9am
   - Use the production environment
   - Use the following command
-```
+```bash
 $ dbt run --model fact_turnstile.sql
 ```
 
@@ -196,7 +202,7 @@ $ dbt run --model fact_turnstile.sql
 
 **Note: There should be files on the Data Lake for the job to insert any new records. To validate this, run these queries from the Data Warehouse**
 
-```
+```sql
 -- check station dimension table
 select count(*) from mta_data.dim_station;
 
