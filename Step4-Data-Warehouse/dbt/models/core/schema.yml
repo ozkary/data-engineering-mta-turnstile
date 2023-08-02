@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dim_station
     description: >
-      List of unique stations idefied by station_id.       
+      List of unique stations identify by station_id.       
     columns:
           - name: station_id
             description: The station identifier            
@@ -20,7 +20,7 @@ models:
 
   - name: dim_booth
     description: >
-      List of unique booth idefied by booth_id.  
+      List of unique booth identify by booth_id.  
     columns:
           - name: booth_id
             description: The booth identifier            
@@ -42,11 +42,13 @@ models:
           - name: station_id
             description: the station id
             tests:
-                - not_null:
-                    severity: warn
+                - relationships:
+                  to: ref('dim_station')
+                  field: station_id
+                  severity: warn              
   - name: fact_turnstile
     description: >
-     Represents the daily entries and exits associated to boths in subway stations
+     Represents the daily entries and exits associated to booths in subway stations
     columns:
           - name: log_id
             description: Primary key for this table, generated with a concatenation CA, SCP,UNIT, STATION CREATED            

@@ -10,7 +10,7 @@ Before proceeding with table construction, our initial focus is on creating prec
 
 ## Data Modeling
 
-We are using cloud data build tools (dbt) to build the data analysis resources on BigQuery. With this tool, we can define the lookup, facts and dimensions table in a way that enables us to support a CICD process by rebuilding the project resources and pushing the changes to the cloud hosting environment. Another great tool for data modeling between a data lake and data warehouse is Apache Spark.
+We are using cloud data build tools (dbt) to build the data analysis resources on BigQuery. With this tool, we can define the lookup, facts and dimensions table in a way that enables us to support a CI/CD process by rebuilding the project resources and pushing the changes to the cloud hosting environment. Another great tool for data modeling between a data lake and data warehouse is Apache Spark.
 
 > [Use cloud dbt for a SQL like approach](https://www.getdbt.com/)
 
@@ -163,7 +163,7 @@ $ dbt build --select dim_station.sql
 $ dbt build --select fact_turnstile.sql
 
 ```  
-- After runnining these command, the following resources should be in the data warehouse
+- After running these command, the following resources should be in the data warehouse
 
 <img width="380px" src="../images/mta-bigquery-schema.png" alt="ozkary dbt bigquery schema"/>
 
@@ -225,4 +225,4 @@ select count(*) from mta_data.stg_turnstile;
 The files from the Data Lake have an expiration policy. Files older than two weeks will be drop from storage. This should allow for the process to keep a good performance.
 
 
-> 👉 [Data Analyis and Visualization](https://github.com/ozkary/data-engineering-mta-turnstile/tree/main/Step5-Analysis)
+> 👉 [Data Analysis and Visualization](https://github.com/ozkary/data-engineering-mta-turnstile/tree/main/Step5-Analysis)
