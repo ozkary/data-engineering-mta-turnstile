@@ -8,9 +8,10 @@ with booths as
     Station,
     row_number() over(partition by UNIT, CA) as rn
   from {{ source('staging','ext_turnstile') }}   
+  where Unit is not null and CA is not null and Station is not null
 )
 select
-    -- identifiers
+    -- create a unique key 
     {{ dbt_utils.generate_surrogate_key(['UNIT', 'CA']) }} as booth_id,
     UNIT as remote,
     CA as booth_name,

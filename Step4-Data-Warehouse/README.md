@@ -70,7 +70,7 @@ Our physical data model should look like this:
   - Run the process from dbt cloud 
   - Link dbt with your Github project
   - Create schedule job on dbt cloud for every Sunday 9am
-  - Or install locally (VM) and run from CLI
+  - Or install locally (VM) and run from the CLI
 - GitHub account
 - Google BigQuery resource 
 
@@ -189,9 +189,12 @@ $ dbt docs generate
 ```bash
 $ dbt debug --config-dir
 ```
-- On dbt Cloud setup the dbt schedule job to run every Sunday at 9am
+
+- Schedule the job
+  - On dbt Cloud setup the dbt schedule job to run every Sunday at 9am
   - Use the production environment
   - Use the following command
+
 ```bash
 $ dbt run --model fact_turnstile.sql
 ```

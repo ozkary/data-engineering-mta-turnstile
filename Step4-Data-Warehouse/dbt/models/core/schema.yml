@@ -42,10 +42,10 @@ models:
           - name: station_id
             description: the station id
             tests:
-                - relationships:
+               - relationships:
                   to: ref('dim_station')
                   field: station_id
-                  severity: warn              
+                  severity: warn          
   - name: fact_turnstile
     description: >
      Represents the daily entries and exits associated to booths in subway stations

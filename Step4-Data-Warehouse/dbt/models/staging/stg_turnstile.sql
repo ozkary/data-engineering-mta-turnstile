@@ -15,10 +15,11 @@ with turnstile as
   EXITS,
     row_number() over(partition by CA, UNIT, SCP, DATE, TIME) as rn
   from {{ source('staging','ext_turnstile') }} as log
+  where Station is not null and DATE is not null and TIME is not null
   
 )
 select
-    -- identifiers
+    -- create a unique key 
     {{ dbt_utils.generate_surrogate_key(['REF', 'CREATED']) }} as log_id,
     CA as booth,
     UNIT as remote,

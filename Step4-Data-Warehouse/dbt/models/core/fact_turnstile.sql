@@ -19,6 +19,7 @@ with turnstile as (
         entries,
         exits
     from {{ ref('stg_turnstile') }}
+    where log_id is not null
 ), 
 
 dim_station as (

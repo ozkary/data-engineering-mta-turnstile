@@ -9,6 +9,7 @@ select
     booth_name,
     station_name
 from {{ ref('stg_booth') }}
+where booth_id is not null 
 ),
 
 dim_station as (

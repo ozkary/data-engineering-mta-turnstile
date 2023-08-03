@@ -5,6 +5,7 @@ select
     station_id, 
     station_name    
 from {{ ref('stg_station') }} as d
+where station_id is not null
 )
 select
     ns.station_id,
