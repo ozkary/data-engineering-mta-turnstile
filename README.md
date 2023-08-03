@@ -2,7 +2,10 @@
 <p>
 <a target="_ozkary" style="font-size:1.5rem;margin-right:20px;" href="https://www.ozkary.com">
 Written by Oscar Garcia
-</a>  <a target="_ozkary" style="font-size:1.5rem" href="https://twitter.com/ozkary">
+</a>
+</p>  
+<p>
+<a target="_ozkary" style="font-size:1.5rem" href="https://twitter.com/ozkary">
 Twitter @ozkary
 </a> 
 </p>
@@ -12,11 +15,11 @@ Use this project Wiki for installation and configuration information
 </a>
 </p>
 
-### Anouncement and Updates
+### Announcement and Updates
 
-- Join this list to receive updates on new content about Data Engineering  [Sign up here](https://maven.com/forms/56ae79)  
-- Follow us on [Twitter](https://twitter.com/ozkary)  
-  
+> 👉 Join this list to receive updates on new content about Data Engineering  [Sign up here](https://maven.com/forms/56ae79)  
+> 👉 Follow us on [Twitter](https://twitter.com/ozkary)  
+> 👉 [Data Engineering Fundamental Series](https://www.ozkary.com/2023/03/data-engineering-process-fundamentals.html)    
 ## Problem Statement
 
 In the city of New York, commuters use the Metropolitan Transportation Authority (MTA) subway system for transportation. There are millions of people that use this system every day; therefore, businesses around the subway stations would like to be able to use Geofencing advertisement to target those commuters or possible consumers and attract them to their business locations at peak hours of the day.
