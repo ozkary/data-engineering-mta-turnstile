@@ -54,7 +54,7 @@ Load the dashboard by clicking this link:
 https://lookerstudio.google.com/reporting/94749e6b-2a1f-4b41-aff6-35c6c33f401e
 
 
-<img width="980px" src="../images/mta-dashboard.png" alt="ozkary MTA dashboard"/>
+<img width="980px" src="../images/ozkary-data-engineering-fundamentals-analysis-visualization-dashboard.png" alt="ozkary MTA dashboard"/>
 
 
 ## Dashboard Specifications

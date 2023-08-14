@@ -47,7 +47,7 @@ The data can be grouped into stations, date and time of the day. This data is au
 
 ## Analysis Results
 
-![ozkary MTA dashboard](images/mta-dashboard.png)
+![ozkary MTA dashboard](images/ozkary-data-engineering-fundamentals-analysis-visualization-dashboard.png)
 
 https://lookerstudio.google.com/reporting/94749e6b-2a1f-4b41-aff6-35c6c33f401e
 
