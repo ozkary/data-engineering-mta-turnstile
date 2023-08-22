@@ -82,7 +82,7 @@ $ python3 dashboard.py
 
 Once the implementation of this Python dashboard is complete, we can run it and see the following dashboard load on our browser:
 
-![ozkary-data-engineering-analysis-visualization-dashboard](//ozkary.dev/assets/2023/ozkary-data-engineering-process-analysis-visualization-python-dash.png "Data Engineering Process Fundamentals - Analysis and Visualization Python Dashboard")
+![ozkary-data-engineering-analysis-visualization-dashboard](../images/ozkary-data-engineering-process-analysis-visualization-python-dash.png "Data Engineering Process Fundamentals - Analysis and Visualization Python Dashboard")
 
 ## Data Analysis Tools
 
@@ -160,6 +160,20 @@ END
 ```python
 HOUR(created_dt)
 ```
+
+### Looker UI
+
+Take a look at the image below. This is the Looker UI. We should familiarize ourselves with the following areas:
+
+![ozkary-data-engineering-analysis-visualization-looker](../images/ozkary-data-engineering-process-analysis-visualization-looker-design.png "Data Engineering Process Fundamentals - Analysis and Visualization Looker design")
+
+- Add data: Use this to add a new data source
+- Add a chart: This allows us to add new charts
+- Add a control: Here, we can add the date range and station name list
+- Canvas: This is where we place all the components
+- Setup Pane: This allows us to configure the date range, dimension, measures, and sorting settings
+- Style Pane: Here, we can configure the colors and font
+- Data Pane: This displays the data sources with their fields. New fields are created as functions. When we hover over a field, we can see a function (fx) icon, which indicates that we can edit the function and configure our snippet
 
 ## Summary
 
