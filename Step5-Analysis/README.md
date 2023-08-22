@@ -1,7 +1,7 @@
 # Step 5 Data Analysis and Visualization
 Data analysis and visualization are fundamental to a data-driven decision-making process. To grasp the best strategy for our scenario, we delve into the data analysis and visualization phase of the process, making data models, analyzes and diagrams that allow us to tell stories from the data.
 
-Once the data is available from the Data Warehouse, the next step is to analyze and visualize the data, so we can understand the information that is providing. This is the moment where we look at the original requirements and determine what should be needed to meet them
+Once the data is available from the Data Warehouse, the next step is to analyze and visualize the data, so we can understand the information that is providing. This is the moment where we look at the original requirements and determine what should be needed to meet them.
 
 ## Data Analysis Requirements
 
@@ -25,9 +25,53 @@ Once the data is available from the Data Warehouse, the next step is to analyze 
 - Explore distributions based on time slots to uncover daily peak hours
   - Integrate bar charts to illustrate entries and exits within each time slot
 
-## Python Dashboard Requirements
+## Data Analysis
 
-These are the requirements to be able to run the Python dashboard.
+Data analysis is the practice of exploring data and understanding its meaning. It involves activities that can help us achieve a specific goal, such as identifying data dimensions and measures, as well as data analysis to identify outliers, trends, distributions, and hypothesis testing.
+
+> Use the Jupyter Notebook file analysis.ipynb
+
+```python
+
+import pandas as pd
+
+# use the sample dataset in this path Step5-Analysis/analysis_data.csv
+df = pd.read_csv('./analysis_data.csv', iterator=False)
+df.head(10)
+
+# Define time (hr) slots
+time_slots = {
+    'morning': (8, 11),
+    'afternoon': (12, 15),
+    'night': (16, 20)
+}
+# cast the date column to datetime
+df["created_dt"] = pd.to_datetime(df['created_dt'])
+df["exits"] = df["exits"].astype(int)
+df["entries"] = df["entries"].astype(int)
+
+# Calculate average arrivals (exits) and departures (entries) for each time slot
+for slot, (start_hour, end_hour) in time_slots.items():
+    slot_data = df[(df['created_dt'].dt.hour >= start_hour) & (df['created_dt'].dt.hour < end_hour)]
+    avg_arrivals = slot_data['exits'].mean()
+    avg_departures = slot_data['entries'].mean()
+    print(f"{slot.capitalize()} - Avg Arrivals: {avg_arrivals:.2f}, Avg Departures: {avg_departures:.2f}")
+
+# output
+Morning - Avg Arrivals: 30132528.64, Avg Departures: 37834954.08
+Afternoon - Avg Arrivals: 30094161.08, Avg Departures: 37482421.78
+Night - Avg Arrivals: 29513309.25, Avg Departures: 36829260.66
+```
+
+The code calculates the average arrivals and departures for each time slot. It prints out the results for each time slot, helping us identify the patterns of commuter activity during different times of the day.
+
+## Data Visualization
+
+Data visualization is a powerful tool that takes the insights derived from data analysis and presents them in a visual format. While tables with numbers on a report provide raw information, visualizations allow us to grasp complex relationships and trends at a glance. Dashboards, in particular, bring together various visual components like charts, graphs, and scorecards into a unified interface.
+
+## Code-Centric - Python Dashboard 
+
+These are the requirements to be able to run the Python dashboard:
 
 - Use the analysis_data.csv file
   - Use the local file for this implementation
@@ -40,6 +84,9 @@ $ pip install plotly
 $ pip install dash
 $ pip install dash_bootstrap_components
 ```
+
+### Review the Code
+
 The `update_dashboard` function is responsible for updating and refreshing the dashboard. It handles the data range change event. As the user changes the date range, this function takes in the start and end dates as inputs. The function then filters the dataset, retaining only the records falling within the specified date range. Subsequently, the function calculates key metrics for the dashboard's score cards. It computes the total number of entries and exits during the filtered time period, and these values are converted to trillions for better readability.
 
 The code proceeds to generate various visual components for the dashboard. These components include donut charts illustrating station-wise entries and exits, bar charts showcasing entries and exits by day of the week, and another set of bar charts displaying entries and exits by time slot. Each of these visualizations is created using specialized functions like create_station_donut_chart, create_day_bar_chart, and create_time_bar_chart.
@@ -84,11 +131,11 @@ Once the implementation of this Python dashboard is complete, we can run it and 
 
 ![ozkary-data-engineering-analysis-visualization-dashboard](../images/ozkary-data-engineering-process-analysis-visualization-python-dash.png "Data Engineering Process Fundamentals - Analysis and Visualization Python Dashboard")
 
-## Data Analysis Tools
+## Low-Code - Data Analysis Tools
 
 For this analysis and visualization process, we are using lookerstudio.google.com.  Looker is Business Intelligence (BI) tools, which enables users to create dashboards on the data that is being analyzed. It is a no-code tool that can load data models from disparate data sources. 
 
-> [Signup for Looker Studio](https://lookerstudio.google.com/)
+> [Sign-up for Looker Studio](https://lookerstudio.google.com/)
 
 Other Visualizations tools: 
 
@@ -96,29 +143,7 @@ Other Visualizations tools:
 
 > [Tableau](https://www.tableau.com/)
 
-## Data Analysis Conclusions
-
-By looking at the dashboard, the following conclusions can be observed:
-
-- The stations with the highest distribution represent the busiest location 
-- The busiest time slot for both exits and entries is the hours between 4pm to 9pm
-- All days of the week show a high volume of commuters
-- Businesses can select the station close to their location for further analysis
-  
-
-With these observations, plans can be made to optimize the marketing campaigns and target users around a geo-fence area and hours of the day with proximity to the corresponding business locations.  
-
-## View the Dashboard
-
-Load the dashboard by clicking this link:
-
-https://lookerstudio.google.com/reporting/94749e6b-2a1f-4b41-aff6-35c6c33f401e
-
-
-<img width="980px" src="../images/ozkary-data-engineering-fundamentals-analysis-visualization-dashboard.png" alt="ozkary MTA dashboard"/>
-
-
-## Dashboard Specifications
+### Dashboard Specifications
 
 - Sign up for a looker account or use another BI tool
 - Create a new dashboard
@@ -174,6 +199,28 @@ Take a look at the image below. This is the Looker UI. We should familiarize our
 - Setup Pane: This allows us to configure the date range, dimension, measures, and sorting settings
 - Style Pane: Here, we can configure the colors and font
 - Data Pane: This displays the data sources with their fields. New fields are created as functions. When we hover over a field, we can see a function (fx) icon, which indicates that we can edit the function and configure our snippet
+
+
+### View the Dashboard
+
+After following all the specification, we should be able to preview the dashboard on the browser. We can load an example, of a dashboard by clicking on the link below:
+
+> 👉 [View the dashboard online](https://lookerstudio.google.com/reporting/94749e6b-2a1f-4b41-aff6-35c6c33f401e/)
+
+<img width="980px" src="../images/ozkary-data-engineering-fundamentals-analysis-visualization-dashboard.png" alt="ozkary MTA dashboard"/>
+
+
+## Data Analysis Conclusions
+
+By looking at the dashboard, the following conclusions can be observed:
+
+- The stations with the highest distribution represent the busiest location 
+- The busiest time slot for both exits and entries is the hours between 4pm to 9pm
+- All days of the week show a high volume of commuters
+- Businesses can select the station close to their location for further analysis
+  
+
+With these observations, plans can be made to optimize the marketing campaigns and target users around a geo-fence area and hours of the day with proximity to the corresponding business locations.  
 
 ## Summary
 
