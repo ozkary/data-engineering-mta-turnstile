@@ -207,7 +207,13 @@ After following all the specification, we should be able to preview the dashboar
 
 > 👉 [View the dashboard online](https://lookerstudio.google.com/reporting/94749e6b-2a1f-4b41-aff6-35c6c33f401e/)
 
+> 👉 [View the mobile dashboard online](https://lookerstudio.google.com/s/qv_IQAC-gKU)
+
 <img width="980px" src="../images/ozkary-data-engineering-fundamentals-analysis-visualization-dashboard.png" alt="ozkary MTA dashboard"/>
+
+This is a an image of the mobile dashboard.
+
+![ozkary-data-engineering-analysis-visualization-mobile-dashboard](../images/ozkary-data-engineering-process-analysis-visualization-looker-mobile.png "Data Engineering Process Fundamentals - Analysis and Visualization Mobile Dashboard")
 
 
 ## Data Analysis Conclusions
