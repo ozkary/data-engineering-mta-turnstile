@@ -98,7 +98,49 @@ Our physical data model should look like this:
          - Use common table expressions to be able to join all the views
      - Add a schema.yml file to describe all the tables
 
+
+### Review the Code
+
+Start by navigating to the dbt project folder.
+
+```bash
+$ cd Step4-Data-Warehouse/dbt
+```
+
+Project tree:
+
+```
+- dbt
+  │
+  ├─ models
+  │   │
+  │   ├─ core
+  │   │   ├─ schema.yml
+  │   │   ├─ dim_booth.sql
+  │   │   ├─ dim_station.sql
+  │   │   ├─ fact_turnstile.sql
+  │   │   └─ ...
+  │   ├─ staging
+  │   │   ├─ schema_*.yml
+  │   │   ├─ stg_booth.sql
+  │   │   ├─ stg_station.sql
+  │   │   ├─ stg_turnstile.sql
+  │   │   └─ ...  
+  │   ├─ target
+  │   │   ├─ compile
+  │   │   ├─ run
+  │   │   └─ ...  
+  └─ dbt_project.yml
+
+```
+
+The dbt folder contains the SQL-based source code. The staging folder contains the view definitions. The core folder contains the table definitions. The schema files in those folders have test rules and data constraints that are used to validate the models. This is how we are able to test our models. 
+
+The schema.yml files are used as configurations to define the schema of the final output of the models. It provides the ability to explicitly specify the column names, data types, and other properties of the resulting table created by each dbt model. This file allows dbt to generate the appropriate SQL statements for creating or altering tables in the target data warehouse.
+
 ### Lineage 
+
+Data lineage is the documentation and tracking of the flow of data from its origin to its destination, including all the intermediate processes and transformations that it undergoes. In this case, we show how the external table is the source for the fact table and the dimension table dependencies.
 
 ![ozkary-data-engineering-dbt-model-lineage](../images/mta-bdt-lineage.png "ozkary dbt model lineage")
 
@@ -184,6 +226,8 @@ $ dbt test
 ```bash
 $ dbt docs generate
 ```
+
+![Data Warehouse Documents](../images/ozkary-data-engineering-process-data-warehouse-docs.png)
 
 - To see the project folder configuration
 ```bash
