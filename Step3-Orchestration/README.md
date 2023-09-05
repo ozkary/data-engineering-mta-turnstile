@@ -2,6 +2,10 @@
 
 At this point of the project, we understand the source and structure of the data. We also have provisioned a Data Lake (DL) to store all the files that we need to download. We are ready to orchestrate a data pipeline that can enable us to process multiple files and save them to the DL using a compressed or parquet data format. Let’s first review some of these concepts.
 
+> 👉 [Data Engineering Fundamental Series - Pipeline and Orchestration](https://www.ozkary.com/2023/05/data-engineering-process-fundamentals-pipeline-orchestration.html)    
+> 👉 [Data Engineering Fundamental YouTube Video](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K)    
+
+
 A data pipeline is a workflow with different steps in which some data is extracted, processed and stored at another location. The automation, scheduling and monitor of these steps is referred to as orchestration. For this project, we are using Prefect cloud as an orchestration as a service tool.
 
 ### Orchestration Tools

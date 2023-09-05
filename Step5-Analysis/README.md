@@ -3,6 +3,10 @@ Data analysis and visualization are fundamental to a data-driven decision-making
 
 Once the data is available from the Data Warehouse, the next step is to analyze and visualize the data, so we can understand the information that is providing. This is the moment where we look at the original requirements and determine what should be needed to meet them.
 
+> 👉 [Data Engineering Fundamental Series - Data Analysis and Visualization](https://www.ozkary.com/2023/07/data-engineering-process-fundamentals-data-analysis-visualization.html)    
+> 👉 [Data Engineering Fundamental YouTube Video](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K)    
+
+
 ## Data Analysis Requirements
 
 - Identify the time slots for morning and afternoon analysis

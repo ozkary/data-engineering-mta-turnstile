@@ -1,5 +1,8 @@
 # Step 1 Discovery
 
+> 👉 [Data Engineering Fundamental Series - Discovery](https://www.ozkary.com/2023/04/data-engineering-process-fundamentals-discovery.html)    
+> 👉 [Data Engineering Fundamental YouTube Video](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K)    
+
  In the discovery process, we take a look at the data that is available for our analysis. We are using the MTA turnstiles information which is available at this location:
 
 http://web.mta.info/developers/turnstile.html

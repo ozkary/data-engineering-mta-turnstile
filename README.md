@@ -20,6 +20,8 @@ Use this project Wiki for installation and configuration information
 > 👉 Join this list to receive updates on new content about Data Engineering  [Sign up here](https://maven.com/forms/56ae79)  
 > 👉 Follow us on [Twitter](https://twitter.com/ozkary)  
 > 👉 [Data Engineering Fundamental Series](https://www.ozkary.com/2023/03/data-engineering-process-fundamentals.html)    
+> 👉 [Data Engineering Fundamental YouTube Video](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K)    
+
 ## Problem Statement
 
 In the city of New York, commuters use the Metropolitan Transportation Authority (MTA) subway system for transportation. There are millions of people that use this system every day; therefore, businesses around the subway stations would like to be able to use Geofencing advertisement to target those commuters or possible consumers and attract them to their business locations at peak hours of the day.

@@ -2,6 +2,10 @@
 
 After defining a data pipeline orchestration process, we need to define how to store the data, so it can become available to visualization and analysis tools. A Data Lake is a great location to store large amounts of data, but it is not designed to allow the reading of information. For that purpose, we need to use a Data Warehouse (DW), which is an Online Analytical Processing (OLAP) tool. 
 
+> 👉 [Data Engineering Fundamental Series - Data Warehouse and Transformation](https://www.ozkary.com/2023/06/data-engineering-process-fundamentals-data-warehouse-transformation.html)     
+> 👉 [Data Engineering Fundamental YouTube Video](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K)    
+
+
 In contrast to the ETL process employed by Data Lakes with Python code, a Data Warehouse (DW) relies on the ETL process. This fundamental distinction emphasizes the need for well-defined and optimized models within the DW, enabling efficient data access and exceptional performance.
 
 Before proceeding with table construction, our initial focus is on creating precise data models based on thorough analysis and specific requirements. To achieve this, we aim to leverage a tool that facilitates model development in an automated, testable, and repeatable manner. By incorporating such tools into our project, our architecture evolves to the following:
