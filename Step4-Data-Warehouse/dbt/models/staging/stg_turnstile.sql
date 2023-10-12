@@ -34,8 +34,8 @@ select
     cast(CREATED as timestamp) as created_dt,    
        
     -- measures
-    cast(entries as integer) as entries,
-    cast(exits as integer) as exits    
+    cast(ENTRIES as integer) as entries,
+    cast(EXITS as integer) as exits    
 from turnstile
 where rn = 1
 

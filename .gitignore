@@ -133,3 +133,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+
+# exclude csharp build artifacts
+*.csproj.user
+*.dll
+*.exe
+*.pdb
+**/obj
+**/bin
