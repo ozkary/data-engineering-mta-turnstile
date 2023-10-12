@@ -35,9 +35,10 @@ namespace DataStreaming
             // Parse named arguments
             var namedArgs = ParseNamedArguments(args);
             
-            // validate the arguments if not exit the app
-            if (namedArgs.Length < 2) {
+            // check the dictionary length should be 2 if not print the usage message and quit
+            if (namedArgs.Count() < 2) {
                 Console.WriteLine("Usage: --topic mta-turnstile --config ~/.kafka/azure.properties");
+                return;
             }
             
             // read the args [0] = topic, [1] = configuration file path            

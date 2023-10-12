@@ -48,9 +48,10 @@ namespace DataStreaming {
             {          
                 consumer.Subscribe(topic);
 
-                while (!cts.IsCancellationRequested)
+                try
                 {                    
-                    try {
+                    while (!cts.IsCancellationRequested) 
+                    {
 
                         // read the message
                         var result = consumer.Consume(TimeSpan.FromSeconds(10));
@@ -74,27 +75,27 @@ namespace DataStreaming {
                         Console.WriteLine($"Received message: {key}: {value}");
 
                         // Wait for 10 seconds before sending the next message
-                        Thread.Sleep(10000);        
+                        Thread.Sleep(5000);        
 
                     }
-                    // add keyboard interrupt exception
-                    catch (OperationCanceledException)
-                    {
-                        Console.WriteLine("Closing consumer.");                        
-                    }
-                    catch (ProduceException<string, string> e)
-                    {
-                        Console.WriteLine($"Delivery failed: {e.Error.Reason}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Exception: {ex}");
-                    }  
-                     finally
-                    {
-                        consumer.Close();
-                    }                          
                 }
+                // add keyboard interrupt exception
+                catch (OperationCanceledException)
+                {
+                    Console.WriteLine("Closing consumer.");                        
+                }
+                catch (ProduceException<string, string> e)
+                {
+                    Console.WriteLine($"Delivery failed: {e.Error.Reason}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex}");
+                }  
+                    finally
+                {
+                    consumer.Close();
+                }                                          
             }                    
         }
     }

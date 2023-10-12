@@ -36,8 +36,9 @@ namespace DataStreaming
             var namedArgs = ParseNamedArguments(args);
             
             // validate the arguments if not exit the app
-            if (namedArgs.Length < 4) {
+            if (namedArgs.Count() < 4) {
                 Console.WriteLine("Usage: --topic mta-turnstile --groupid turnstile --clientid appTurnstile --config ~/.kafka/azure.properties");
+                return;
             }
             
             var topic = namedArgs.GetValueOrDefault("--topic", string.Empty);
