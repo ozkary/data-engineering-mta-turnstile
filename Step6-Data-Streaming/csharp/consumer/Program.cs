@@ -2,10 +2,10 @@
 
 // add a namespace DataStreaming
 namespace DataStreaming
-{
+{     
     class Program
-    {           
-         /***
+    {                
+        /***
         * Command line argument parser
         * 
         * Parse the command line arguments and return a dictionary of named arguments.
@@ -30,25 +30,26 @@ namespace DataStreaming
         {
             // clear the console
             Console.Clear();
-            Console.WriteLine("Producer is running");
-            
-            // Parse named arguments
+            Console.WriteLine("Consumer is running");
+
+             // Parse named arguments
             var namedArgs = ParseNamedArguments(args);
             
             // validate the arguments if not exit the app
-            if (namedArgs.Length < 2) {
-                Console.WriteLine("Usage: --topic mta-turnstile --config ~/.kafka/azure.properties");
+            if (namedArgs.Length < 4) {
+                Console.WriteLine("Usage: --topic mta-turnstile --groupid turnstile --clientid appTurnstile --config ~/.kafka/azure.properties");
             }
             
-            // read the args [0] = topic, [1] = configuration file path            
             var topic = namedArgs.GetValueOrDefault("--topic", string.Empty);
-            var configFilePath = namedArgs.GetValueOrDefault("--config", string.Empty);
-            
-            var kafkaProducer = new KafkaProducer(configFilePath, topic);
-            kafkaProducer.ProduceMessages();
+            var groupId = namedArgs.GetValueOrDefault("--groupid", string.Empty);
+            var clientId = namedArgs.GetValueOrDefault("--clientid", string.Empty);
+            var configFilePath = namedArgs.GetValueOrDefault("--config", string.Empty);            
+
+            var kafkaConsumer = new KafkaConsumer(configFilePath, topic, groupId, clientId);
+            kafkaConsumer.ConsumeMessages();
         }
     }
 }
 
 //  usage
-//  dotnet run --topic mta-turnstile --config ~/.kafka/azure.properties
+//  dotnet run --topic mta-turnstile --groupid turnstile --clientid appTurnstile --config ~/.kafka/azure.properties
