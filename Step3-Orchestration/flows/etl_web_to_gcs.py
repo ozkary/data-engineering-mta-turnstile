@@ -212,3 +212,7 @@ if __name__ == '__main__':
 # http://web.mta.info/developers/data/nyct/turnstile/turnstile_230318.txt
 # files are published every Sunday format turnstile_yyMMdd.txt
 # python3 etl_web_to_gcs.py --year 2023 --month 3 --day 
+# check files in gcs gs://ozkary-mta-data/mta/turnstile/ 
+# use the gsutil for gcs and gcloud for all cloud related commands
+# gsutil ls -l gs://ozkary_data_lake_ozkary-de-101/turnstile/
+# gcloud storage ls --recursive gs://ozkary_data_lake_ozkary-de-101/
