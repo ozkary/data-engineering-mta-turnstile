@@ -56,9 +56,10 @@ class KafkaProducer:
                 print(f'Sent message: {message}')
 
                 # Wait for 10 seconds before sending the next message
-                time.sleep(15)
+                time.sleep(10)
             except KeyboardInterrupt:
                 pass
+                exit(0)
             except KafkaTimeoutError as e:
                 print(f"Kafka Timeout {e.__str__()}")
             except Exception as e:
