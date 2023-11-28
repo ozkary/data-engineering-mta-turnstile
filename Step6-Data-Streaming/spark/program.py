@@ -22,7 +22,38 @@ def write_to_console(df: DataFrame, output_mode: str = 'append', processing_time
         .option("truncate", False) \
         .start()
     
-    console_query.awaitTermination()     
+    # this suspends execution until the stream is stopped
+    # console_query.awaitTermination()     
+
+
+# write a streaming data frame to storage ./storage
+def write_to_storage(df: DataFrame, output_mode: str = 'append', processing_time: str = '15 seconds') -> None:
+    """
+        Output stream values to the console
+    """    
+    df_csv = df.select(
+        "A/C", "UNIT", "SCP", "STATION", "LINENAME", "DIVISION", "DATE", "DESC",
+        "ENTRIES", "EXITS"
+    )
+
+    print("Storage: DataFrame Schema:")
+    df_csv.printSchema()
+
+    print("Storage: Sample Data:")
+    df_csv.show()
+        
+    # .partitionBy("STATION") \
+    storage_query = df_csv.writeStream \
+        .outputMode(output_mode) \
+        .trigger(processingTime=processing_time) \
+        .format("csv") \
+        .option("header", True) \
+        .option("path", "./storage") \
+        .option("checkpointLocation", "./checkpoint") \
+        .option("truncate", False) \
+        .start()
+    
+    # storage_query.awaitTermination()
 
 def main_flow(params) -> None:
     """
@@ -42,7 +73,7 @@ def main_flow(params) -> None:
             .appName("turnstiles-consumer") \
             .getOrCreate()                
     
-    spark_session.sparkContext.setLogLevel("INFO")
+    spark_session.sparkContext.setLogLevel("WARN")
     
     # create an instance of the consumer class
     consumer = SparkConsumer(spark_settings, topic, group_id, client_id)
@@ -54,23 +85,14 @@ def main_flow(params) -> None:
     df_messages = consumer.parse_messages(schema=turnstiles_schema)
     write_to_console(df_messages)
     
-    # define a window for 5 minutes aggregations group by station
-    window_duration = '5 minutes'
-    window_slide = '5 minutes'
+    # define a window for n minutes aggregations group by station
+    window_duration = '2 minutes'
+    window_slide = '2 minutes'
 
-    df_windowed = consumer.agg_messages(window_duration, window_slide)
+    df_windowed = consumer.add_by_station(df_messages, window_duration, window_slide)
         
     write_to_console(df_windowed)
-
-    # Write the aggregated data to a blob storage as compressed CSV files
-    # query = df_windowed.writeStream\
-    #     .outputMode("update")\
-    #     .foreachBatch(lambda batch_df, batch_id: batch_df.write\
-    #         .mode("overwrite")\
-    #         .csv(BUCKET)  # Replace with your blob storage path
-    #     )\
-    #     .start()
-           
+  
     spark_session.streams.awaitAnyTermination()
 
 
@@ -100,7 +122,7 @@ if __name__ == "__main__":
 # load spark shell
 # spark-shell --packages org.apache.spark:spark-sql-kafka-0-10_2.12:your_spark_version
 
-# run the app
+# run the app using spark-submit
 # python3 program.py --topic mta-turnstile --group turnstile --client appTurnstile --config ~/.kafka/azure.properties
 # spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.2 program.py --topic mta-turnstile --group turnstile --client appTurnstile --config ~/.kafka/azure.properties
 

@@ -22,8 +22,8 @@ class SparkSettings:
             "subscribe": topic,
             "startingOffsets": "earliest",
             "failOnDataLoss": "false",
-            "kafka.client.id": client_id,
-            "kafka.group.id": group_id,            
+            "client.id": client_id,
+            "group.id": group_id,            
             "auto.offset.reset": "earliest",
             "checkpointLocation": "checkpoint",
             "minPartitions": "2",
@@ -88,32 +88,73 @@ class SparkConsumer:
         """
         self.stream = spark.readStream.format("kafka").options(**self.kafka_options).load()
 
-    def parse_messages(self, schema: str) -> DataFrame:
+    def parse_messages(self, schema) -> DataFrame:
         """
         Parse the messages and use the provided schema to type cast the fields
         """
-        assert self.stream.isStreaming is True, "DataFrame doesn't receive streaming data"
+        stream = self.stream
 
-        self.data_frame = self.stream.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)") \
-            .select(F.from_json(value_deserializer(F.col("value")), schema).alias("parsed_value")) \
-            .select("parsed_value.*")
-        
-        return self.data_frame
+        assert stream.isStreaming is True, "DataFrame doesn't receive streaming data"
+
+        options =  {'header': 'true', 'sep': ','}
+        df = stream.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")               
+                                    
+        # print("df =====>",df)
+        # split attributes to nested array in one Column
+        col = F.split(df['value'], ',')
+
+        # expand col to multiple top-level columns
+        for idx, field in enumerate(schema):
+            df = df.withColumn(field.name.replace('`',''), col.getItem(idx).cast(field.dataType))
+
+        result = df.select([field.name for field in schema])    
+
+        print("parse_messages: DataFrame Schema:")        
+        result.printSchema()
+            
+        return result
 
         
-    def agg_messages(self, window_duration: str, window_slide: str) -> DataFrame:
+    def agg_messages(self, df: DataFrame,  window_duration: str, window_slide: str) -> DataFrame:
         """
             Window for 5 minutes aggregations group by station
         """
-        df_windowed = self.data_frame \
+
+        # Ensure TIMESTAMP is in the correct format (timestamp type)
+        df = df.withColumn("TIMESTAMP", F.col("TIMESTAMP").cast("timestamp"))
+                        
+        df_windowed = df \
             .withWatermark("TIMESTAMP", window_duration) \
-            .groupBy(F.window("TIMESTAMP", window_duration, window_slide), "STATION") \
-            .count() \
+            .groupBy(F.window("TIMESTAMP", window_duration, window_slide),"A/C", "UNIT","SCP","LINENAME","DIVISION", "STATION", "DATE", "DESC") \
             .agg(
-                sum("ENTRIES").alias("ENTRIES"),
-                sum("EXITS").alias("EXITS")
-            )
-        
-        df_windowed.awaitTermination()
+                F.sum("ENTRIES").alias("ENTRIES"),
+                F.sum("EXITS").alias("EXITS")
+            ).withColumn("START", F.col("window.start")).withColumn("END", F.col("window.end")) \
+            .drop("window")
+                
+        print("agg_messages: DataFrame Schema:")
+        df_windowed.printSchema()
 
         return df_windowed
+
+    def add_by_station(self, df: DataFrame, window_duration: str, window_slide: str) -> DataFrame:
+            
+        # Ensure TIMESTAMP is in the correct format (timestamp type)
+        df = df.withColumn("TIMESTAMP", F.col("TIMESTAMP").cast("timestamp"))
+        
+        # Group by 'STATION' and create a n-minute window
+        df_windowed = df \
+            .withWatermark("TIMESTAMP", window_duration) \
+            .groupBy(F.window("TIMESTAMP", window_duration, window_slide), "STATION") \
+            .agg(
+                F.sum("ENTRIES").alias("ENTRIES"),
+                F.sum("EXITS").alias("EXITS")
+            ).withColumn("START", F.col("window.start")).withColumn("END", F.col("window.end")) \
+            .drop("window")
+        
+        print("add_by_station: DataFrame Schema:")
+        df_windowed.printSchema()
+
+        # df_windowed.awaitTermination()
+
+        return df_windowed 
