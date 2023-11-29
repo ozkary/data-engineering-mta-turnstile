@@ -11,7 +11,7 @@ from schema import turnstiles_schema
 PROJECT = 'ozkary-de-101'
 BUCKET = 'gs://ozkary_data_lake_ozkary-de-101/turnstile'
 
-def write_to_console(df: DataFrame, output_mode: str = 'append', processing_time: str = '5 seconds') -> None:
+def write_to_console(df: DataFrame, output_mode: str = 'append', processing_time: str = '15 seconds') -> None:
     """
         Output stream values to the console
     """
@@ -45,7 +45,7 @@ def write_to_storage(df: DataFrame, output_mode: str = 'append', processing_time
     # .partitionBy("STATION") \
     storage_query = df_csv.writeStream \
         .outputMode(output_mode) \
-        .trigger(processingTime=processing_time) \
+        .trigger(F.eventTime(processing_time)) \
         .format("csv") \
         .option("header", True) \
         .option("path", "./storage") \
@@ -87,7 +87,7 @@ def main_flow(params) -> None:
     
     # define a window for n minutes aggregations group by station
     window_duration = '2 minutes'
-    window_slide = '2 minutes'
+    window_slide = '1 minutes'
 
     df_windowed = consumer.add_by_station(df_messages, window_duration, window_slide)
         

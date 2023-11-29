@@ -145,7 +145,7 @@ class SparkConsumer:
         # Group by 'STATION' and create a n-minute window
         df_windowed = df \
             .withWatermark("TIMESTAMP", window_duration) \
-            .groupBy(F.window("TIMESTAMP", window_duration, window_slide), "STATION") \
+            .groupBy(F.window("TIMESTAMP", window_duration), "STATION") \
             .agg(
                 F.sum("ENTRIES").alias("ENTRIES"),
                 F.sum("EXITS").alias("EXITS")
