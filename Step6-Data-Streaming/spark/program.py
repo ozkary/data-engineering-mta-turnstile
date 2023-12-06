@@ -31,21 +31,18 @@ def write_to_storage(df: DataFrame, output_mode: str = 'append', processing_time
     """
         Output stream values to the console
     """    
-    df_csv = df.select(
-        "A/C", "UNIT", "SCP", "STATION", "LINENAME", "DIVISION", "DATE", "DESC",
-        "ENTRIES", "EXITS"
-    )
-
+    # df_csv = df.select(
+    #     "A/C", "UNIT", "SCP", "STATION", "LINENAME", "DIVISION", "DATE", "DESC",
+    #     "ENTRIES", "EXITS"
+    # )
+    #    
     print("Storage: DataFrame Schema:")
-    df_csv.printSchema()
-
-    print("Storage: Sample Data:")
-    df_csv.show()
+    df.printSchema()
         
     # .partitionBy("STATION") \
-    storage_query = df_csv.writeStream \
+    storage_query = df.writeStream \
         .outputMode(output_mode) \
-        .trigger(F.eventTime(processing_time)) \
+        .trigger(processingTime=processing_time) \
         .format("csv") \
         .option("header", True) \
         .option("path", "./storage") \
@@ -81,17 +78,17 @@ def main_flow(params) -> None:
     # set the data frame stream
     consumer.read_kafka_stream(spark_session) 
 
-    # parse the messages
-    df_messages = consumer.parse_messages(schema=turnstiles_schema)
-    write_to_console(df_messages)
-    
     # define a window for n minutes aggregations group by station
-    window_duration = '2 minutes'
+    window_duration = '1 minutes'
     window_slide = '1 minutes'
 
+    # parse the messages
+    df_messages = consumer.parse_messages(schema=turnstiles_schema)
+    write_to_console(df_messages, processing_time=window_duration)
+      
     df_windowed = consumer.add_by_station(df_messages, window_duration, window_slide)
         
-    write_to_console(df_windowed)
+    write_to_storage(df_windowed, output_mode='append',processing_time=window_duration)
   
     spark_session.streams.awaitAnyTermination()
 

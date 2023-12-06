@@ -141,6 +141,8 @@ class SparkConsumer:
             
         # Ensure TIMESTAMP is in the correct format (timestamp type)
         df = df.withColumn("TIMESTAMP", F.col("TIMESTAMP").cast("timestamp"))
+        # df = df.withColumn("ENTRIES", F.col("ENTRIES").fillna(0))
+        # df = df.withColumn("EXITS", F.col("EXITS"))
         
         # Group by 'STATION' and create a n-minute window
         df_windowed = df \
@@ -150,7 +152,8 @@ class SparkConsumer:
                 F.sum("ENTRIES").alias("ENTRIES"),
                 F.sum("EXITS").alias("EXITS")
             ).withColumn("START", F.col("window.start")).withColumn("END", F.col("window.end")) \
-            .drop("window")
+            .drop("window") \
+            .select("STATION","START","END","ENTRIES","EXITS")
         
         print("add_by_station: DataFrame Schema:")
         df_windowed.printSchema()
