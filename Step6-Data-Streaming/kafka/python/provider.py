@@ -18,6 +18,10 @@ class Provider:
         timestamp = datetime.now()
         current_date = timestamp.strftime('%m-%d-%y')
         current_time = timestamp.strftime('%H:%M:%S')
+
+        # get a spark timestamp       
+        format = "%Y-%m-%d %H:%M:%S"  
+        ts = timestamp.strftime(format)
         
         # Generate random entries and exits between 500 and 1000
         entries = str(random.randint(500, 1000))
@@ -30,5 +34,5 @@ class Provider:
         # Format the message in CSV format
          # Create a CSV message
         # headers = 'A/C,UNIT,SCP,STATION,LINENAME,DIVISION,DATE,TIME,DESC,ENTRIES,EXITS,ID,TIMESTAMP\n'
-        message = f'{ac},{unit},02-00-00,{station},456NQR,BMT,{current_date},{current_time},REGULAR,{entries},{exits},{message_id},{timestamp}'        
+        message = f'{ac},{unit},02-00-00,{station},456NQR,BMT,{current_date},{current_time},REGULAR,{entries},{exits},{message_id},{ts}'        
         return (message_id, message)
