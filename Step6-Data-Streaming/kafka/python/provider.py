@@ -27,6 +27,7 @@ class Provider:
         entries = str(random.randint(500, 1000))
         exits = str(random.randint(500, 1000))
 
+        # Generate random ac,units for the same station
         ac = 'A00' + str(random.randint(1, 2))
         unit = 'R00' + str(random.randint(1, 2))
         station = 'Test-Station'
