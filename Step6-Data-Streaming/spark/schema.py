@@ -2,7 +2,7 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 
 # Define the schema for the incoming data
 turnstiles_schema = StructType([
-    StructField("A/C", StringType()),
+    StructField("AC", StringType()),
     StructField("UNIT", StringType()),
     StructField("SCP", StringType()),
     StructField("STATION", StringType()),

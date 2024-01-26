@@ -1,4 +1,4 @@
-import time
+# Standard library imports
 import uuid
 import random
 from datetime import datetime

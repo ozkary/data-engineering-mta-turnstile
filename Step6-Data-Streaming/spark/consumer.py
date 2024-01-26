@@ -5,10 +5,16 @@
 #
 #  MTA turnstile data engineering and analysis
 #
+
+# Standard Library Imports
 import os
+
+# Third-Party Library Imports
 import pyspark
 from pyspark.sql import SparkSession, DataFrame, types
 import pyspark.sql.functions as F
+
+# Local Module Imports
 from config import read_config, key_deserializer, value_deserializer
 
 class SparkSettings:
@@ -97,67 +103,69 @@ class SparkConsumer:
         assert stream.isStreaming is True, "DataFrame doesn't receive streaming data"
 
         options =  {'header': 'true', 'sep': ','}
-        df = stream.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")               
-                                    
-        # print("df =====>",df)
+        df = stream.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)", "timestamp")               
+                                            
         # split attributes to nested array in one Column
         col = F.split(df['value'], ',')
-
+        
         # expand col to multiple top-level columns
         for idx, field in enumerate(schema):
-            df = df.withColumn(field.name.replace('`',''), col.getItem(idx).cast(field.dataType))
-
+            df = df.withColumn(field.name, col.getItem(idx).cast(field.dataType))
+            
+        # remove quotes from TIMESTAMP column
+        df = df.withColumn("TIMESTAMP", F.regexp_replace(F.col("TIMESTAMP"), '"', ''))    
+        df = df.withColumn("AC", F.regexp_replace(F.col("AC"), '"', ''))    
+        
         result = df.select([field.name for field in schema])    
 
-        print("parse_messages: DataFrame Schema:")        
+        df.dropDuplicates(["ID","STATION","TIMESTAMP"])
+
         result.printSchema()
-            
+        
         return result
 
         
     def agg_messages(self, df: DataFrame,  window_duration: str, window_slide: str) -> DataFrame:
         """
-            Window for 5 minutes aggregations group by station
+            Window for n minutes aggregations group by by AC, UNIT, STATION, DATE, DESC
         """
+       # Ensure TIMESTAMP is in the correct format (timestamp type)    
+        date_format = "yyyy-MM-dd HH:mm:ss"        
+        df = df.withColumn("TS", F.to_timestamp("TIMESTAMP", date_format))    
 
-        # Ensure TIMESTAMP is in the correct format (timestamp type)
-        df = df.withColumn("TIMESTAMP", F.col("TIMESTAMP").cast("timestamp"))
-                        
         df_windowed = df \
-            .withWatermark("TIMESTAMP", window_duration) \
-            .groupBy(F.window("TIMESTAMP", window_duration, window_slide),"A/C", "UNIT","SCP","LINENAME","DIVISION", "STATION", "DATE", "DESC") \
+            .withWatermark("TS", window_duration) \
+            .groupBy(F.window("TS", window_duration, window_slide),"AC", "UNIT","SCP","STATION","LINENAME","DIVISION", "DATE", "DESC") \
             .agg(
                 F.sum("ENTRIES").alias("ENTRIES"),
                 F.sum("EXITS").alias("EXITS")
-            ).withColumn("START", F.col("window.start")).withColumn("END", F.col("window.end")) \
-            .drop("window")
-                
-        print("agg_messages: DataFrame Schema:")
-        df_windowed.printSchema()
+            ).withColumn("START",F.col("window.start")) \
+            .withColumn("END", F.col("window.end")) \
+            .withColumn("TIME", F.date_format("window.end", "HH:mm:ss")) \
+            .drop("window") \
+            .select("AC","UNIT","SCP","STATION","LINENAME","DIVISION","DATE","DESC","TIME","START","END","ENTRIES","EXITS")
+        
+        df_windowed.printSchema()            
 
-        return df_windowed
+        return df_windowed   
 
     def add_by_station(self, df: DataFrame, window_duration: str, window_slide: str) -> DataFrame:
             
-        # Ensure TIMESTAMP is in the correct format (timestamp type)
-        df = df.withColumn("TIMESTAMP", F.col("TIMESTAMP").cast("timestamp"))
-        # df = df.withColumn("ENTRIES", F.col("ENTRIES").fillna(0))
-        # df = df.withColumn("EXITS", F.col("EXITS"))
-        
-        # Group by 'STATION' and create a n-minute window
+        # Ensure TIMESTAMP is in the correct format (timestamp type)    
+        date_format = "yyyy-MM-dd HH:mm:ss"        
+        df = df.withColumn("TS", F.to_timestamp("TIMESTAMP", date_format))    
+
         df_windowed = df \
-            .withWatermark("TIMESTAMP", window_duration) \
-            .groupBy(F.window("TIMESTAMP", window_duration), "STATION") \
+            .withWatermark("TS", window_duration) \
+            .groupBy(F.window("TS", window_duration, window_slide), "STATION") \
             .agg(
                 F.sum("ENTRIES").alias("ENTRIES"),
                 F.sum("EXITS").alias("EXITS")
-            ).withColumn("START", F.col("window.start")).withColumn("END", F.col("window.end")) \
+            ).withColumn("START",F.col("window.start")) \
+            .withColumn("END", F.col("window.end")) \
+            .withColumn("TIME", F.date_format("window.start", "HH:mm:ss")) \
             .drop("window") \
-            .select("STATION","START","END","ENTRIES","EXITS")
+            .select("STATION","TIME","START","END","ENTRIES","EXITS")
         
-        print("add_by_station: DataFrame Schema:")
         df_windowed.printSchema()
-
-        # df_windowed.awaitTermination()
-
-        return df_windowed 
+        return df_windowed

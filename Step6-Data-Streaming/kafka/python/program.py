@@ -6,19 +6,23 @@
 #  MTA turnstile data engineering and analysis
 #
 
+# Standard library imports
 import os
 import argparse
 import signal
+
+# Load other libraries
+from prefect import flow
+
+# Local module imports
 from producer import KafkaProducer
 
 # Define a function to handle Ctrl-C signal
 def handle_sigint(signal, frame, producer):
     print("Ctrl-C pressed. Stopping the Kafka producer...")
     exit(0)
-    # producer.close()
-    print("Kafka producer stopped.")
     
-
+@flow (name="MTA - Kafka Data Stream flow", description="Data Streaming Flow")
 def main_flow(params) -> None:
     """
     Main flow to read and send the messages
@@ -26,9 +30,6 @@ def main_flow(params) -> None:
     topic = params.topic    
     config_path = params.config    
     producer = KafkaProducer(config_path, topic)
-
-    # Register the signal handler to handle Ctrl-C       
-    signal.signal(signal.SIGINT, lambda signal, frame: handle_sigint(signal, frame, producer.producer))
 
     producer.produce_messages()
 
@@ -45,9 +46,13 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     main_flow(args)
+
+    # Register the signal handler to handle Ctrl-C       
+    signal.signal(signal.SIGINT, lambda signal, frame: handle_sigint(signal, frame, producer.producer))
     
     print('publisher end')
 
 # usage
 # python3 program.py --topic mta-turnstile --config ~/.kafka/azure.properties
+# python3 program.py --topic mta-turnstile --config ~/.kafka/docker-kafka.properties
 # python3 program.py --topic mta-turnstile --config ~/.kafka/localhost-nosasl.properties

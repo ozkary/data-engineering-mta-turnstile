@@ -1,15 +1,28 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  2023 ozkary.com.
+#
+#  MTA turnstile data engineering and analysis
+#
+
+# Standard Library Imports
 import argparse
 from ast import List
 from pathlib import Path
 import os
-import pyspark
+
+# Third-Party Library Imports
 from pyspark.sql import SparkSession, DataFrame, types
 import pyspark.sql.functions as F
 from consumer import SparkSettings, SparkConsumer
 from schema import turnstiles_schema
+from prefect import flow
 
+# Local Module Imports
 PROJECT = 'ozkary-de-101'
 BUCKET = 'gs://ozkary_data_lake_ozkary-de-101/turnstile'
+
 
 def write_to_console(df: DataFrame, output_mode: str = 'append', processing_time: str = '15 seconds') -> None:
     """
@@ -51,7 +64,7 @@ def write_to_storage(df: DataFrame, output_mode: str = 'append', processing_time
         .start()
     
     # storage_query.awaitTermination()
-
+@flow (name="MTA Spark Data Stream flow", description="Data Streaming Flow")
 def main_flow(params) -> None:
     """
     main flow to process stream messages with spark
@@ -60,8 +73,12 @@ def main_flow(params) -> None:
     group_id = params.group    
     client_id = params.client
     config_path = params.config    
-    spark_master = params.master
 
+    # define a window for n minutes aggregations group by station
+    default_span = '5 minutes'
+    window_duration = default_span if params.duration is None else f'{params.duration} minutes'
+    window_slide = default_span if params.slide is None else f'{params.slide} minutes'
+    
     # create the consumer settings
     spark_settings = SparkSettings(config_path, topic, group_id, client_id)    
         
@@ -77,11 +94,7 @@ def main_flow(params) -> None:
 
     # set the data frame stream
     consumer.read_kafka_stream(spark_session) 
-
-    # define a window for n minutes aggregations group by station
-    window_duration = '1 minutes'
-    window_slide = '1 minutes'
-
+    
     # parse the messages
     df_messages = consumer.parse_messages(schema=turnstiles_schema)
     write_to_console(df_messages, processing_time=window_duration)
@@ -105,7 +118,9 @@ if __name__ == "__main__":
     parser.add_argument('--group', required=True, help='consumer group')
     parser.add_argument('--client', required=True, help='client id group')
     parser.add_argument('--config', required=True, help='cloud settings')    
-    parser.add_argument('--master', required=False, help='Spark master')        
+    parser.add_argument('--duration', required=False, help='window duration for aggregation 5 mins')        
+    parser.add_argument('--slide', required=False, help='window slide 5 mins')        
+    
     args = parser.parse_args()
 
     if (args.master is None):

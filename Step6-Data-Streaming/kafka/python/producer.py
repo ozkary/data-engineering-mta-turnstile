@@ -6,16 +6,18 @@
 #  MTA turnstile data engineering and analysis
 #
 
+# Standard library imports
 import time
-import uuid
-import random
-import os
-import argparse
 from datetime import datetime
+
+# Third-party library imports
 from confluent_kafka import Producer
 from kafka.errors import KafkaTimeoutError
+
+# Local module imports
 from config import read_config, key_serializer, value_serializer
 from provider import Provider
+
 
 class KafkaProducer:
     def __init__(self, config_path, topic):
