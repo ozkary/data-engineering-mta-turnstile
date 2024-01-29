@@ -24,13 +24,13 @@ class Provider:
         ts = timestamp.strftime(format)
         
         # Generate random entries and exits between 500 and 1000
-        entries = str(random.randint(500, 1000))
-        exits = str(random.randint(500, 1000))
+        entries = str(random.randint(5, 10))
+        exits = str(random.randint(5, 10))
 
         # Generate random ac,units for the same station
         ac = 'A00' + str(random.randint(1, 2))
         unit = 'R00' + str(random.randint(1, 2))
-        station = 'Test-Station'
+        station = 'Test-Station' + str(random.randint(1, 2))
 
         # Format the message in CSV format
          # Create a CSV message
