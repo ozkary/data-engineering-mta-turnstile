@@ -6,10 +6,13 @@
 #  MTA turnstile data engineering and analysis
 #
 
+# Standard library imports
 import os
 import argparse
 from time import time
 from pathlib import Path
+
+# Load other libraries
 import pandas as pd
 
 
@@ -80,9 +83,7 @@ def etl_web_to_local(url: str, name: str) -> None:
     if df_iter:      
         file_name = f"{name}.csv.gz"    
         for df in df_iter:
-            try:                                
-                # print(df.columns)                                
-                # print(df.head(10))
+            try:                                                
                 write_local(df, path, file_name)
             except StopIteration as ex:
                 print(f"Finished reading file {ex}")
