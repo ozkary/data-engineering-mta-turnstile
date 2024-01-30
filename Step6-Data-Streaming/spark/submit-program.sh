@@ -34,6 +34,6 @@ fi
 spark-submit --num-executors 2 \
 	         --executor-memory $EXEC_MEM --executor-cores 1 \
              --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.2,org.apache.spark:spark-avro_2.12:3.3.2,org.apache.spark:spark-streaming-kafka-0-10_2.12:3.3.2 \
-             $PYTHON_JOB --topic mta-turnstile --group mta --client appTurnstile --config ~/.kafka/localhost-nosasl.properties > output.log
+             $PYTHON_JOB --topic mta-turnstile --group mta --client appTurnstile --config ~/.kafka/localhost-nosasl.properties 
 
 # run as: bash submit-program.sh program.py

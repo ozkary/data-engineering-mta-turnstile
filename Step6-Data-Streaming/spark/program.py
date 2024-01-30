@@ -7,17 +7,23 @@
 #
 
 # Standard Library Imports
-import argparse
-from ast import List
-from pathlib import Path
 import os
+import argparse
+# from ast import List
+from pathlib import Path
+from datetime import datetime
 
 # Third-Party Library Imports
-from pyspark.sql import SparkSession, DataFrame, types
+from pyspark.sql import SparkSession, DataFrame
 import pyspark.sql.functions as F
+from prefect import flow, task
+from prefect_gcp.cloud_storage import GcsBucket
+
+# Local libraries
 from consumer import SparkSettings, SparkConsumer
+from settings import get_block_name, get_prefix
 from schema import turnstiles_schema
-from prefect import flow
+
 
 # Local Module Imports
 PROJECT = 'ozkary-de-101'
@@ -35,35 +41,93 @@ def write_to_console(df: DataFrame, output_mode: str = 'append', processing_time
         .option("truncate", False) \
         .start()
     
-    # this suspends execution until the stream is stopped
+    # this suspends execution until the stream is stopped must run using async
     # console_query.awaitTermination()     
+
+# @task(name="Stream write GCS", description='Write stream file to GCS', log_prints=False)
+def stream_write_gcs(local_path: Path, file_name: str) -> None:
+    
+    """
+        Upload local parquet file to GCS
+        Args:
+            path: File location
+            prefix: the folder location on storage
+
+    """    
+    block_name = get_block_name()
+    prefix = get_prefix()
+    gcs_path = f'{prefix}/{file_name}'
+    print(f'{block_name} {local_path} {gcs_path}')
+    
+    gcs_block = GcsBucket.load(block_name)        
+    gcs_block.upload_from_path(from_path=local_path, to_path=gcs_path)
+    
+    return
+
+
+# @task (name="MTA Spark Data Stream - Process Mini Batch", description="Write batch to the data lake")
+def process_mini_batch(df, batch_id, path):
+    """Processes a mini-batch, converts to Pandas, and writes to GCP Storage as CSV.gz."""
+
+     # Check if DataFrame is empty
+    if df.count() == 0:
+        print(f"DataFrame for batch {batch_id} is empty. Skipping processing.")
+        return
+
+    # Convert to Pandas DataFrame
+    df_pandas = df.toPandas()
+
+    print(df_pandas.head())
+
+    # Get the current timestamp
+    timestamp = datetime.now()
+    # Format the timestamp as needed
+    time = timestamp.strftime("%Y%m%d_%H%M%S")    
+
+    # Write to Storage as CSV.gz    
+    file_name = f"batch_{batch_id}_{time}.csv.gz"
+    file_path = f"{path}/{file_name}"
+    df_pandas.to_csv(file_path, index=False, compression="gzip")
+
+    # send to the data lake
+    stream_write_gcs(file_path, file_name)
+
 
 
 # write a streaming data frame to storage ./storage
-def write_to_storage(df: DataFrame, output_mode: str = 'append', processing_time: str = '15 seconds') -> None:
+@task (name="MTA Spark Data Stream - Write to Storage", description="Write batch to the data lake")
+def write_to_storage(df: DataFrame, output_mode: str = 'append', processing_time: str = '60 seconds') -> None:
     """
         Output stream values to the console
-    """    
-    # df_csv = df.select(
-    #     "A/C", "UNIT", "SCP", "STATION", "LINENAME", "DIVISION", "DATE", "DESC",
-    #     "ENTRIES", "EXITS"
-    # )
-    #    
-    print("Storage: DataFrame Schema:")
-    df.printSchema()
-        
-    # .partitionBy("STATION") \
-    storage_query = df.writeStream \
+    """   
+    df_csv = df.select(
+        "AC", "UNIT", "SCP", "STATION", "LINENAME", "DIVISION", "DATE", "DESC", "TIME","ENTRIES", "EXITS"
+    )
+
+    path = "./storage/"     
+
+    folder_path = Path(path)
+    if not os.path.exists(folder_path):
+        folder_path.mkdir(parents=True, exist_ok=True)
+
+    storage_query = df_csv.writeStream \
         .outputMode(output_mode) \
         .trigger(processingTime=processing_time) \
         .format("csv") \
         .option("header", True) \
-        .option("path", "./storage") \
+        .option("path", path) \
         .option("checkpointLocation", "./checkpoint") \
+        .foreachBatch(lambda batch, id: process_mini_batch(batch, id, path)) \
         .option("truncate", False) \
         .start()
-    
-    # storage_query.awaitTermination()
+        
+    try:
+        # Wait for the streaming query to terminate
+        storage_query.awaitTermination()
+    except KeyboardInterrupt:
+        # Handle keyboard interrupt (e.g., Ctrl+C)
+        storage_query.stop()
+
 @flow (name="MTA Spark Data Stream flow", description="Data Streaming Flow")
 def main_flow(params) -> None:
     """
@@ -85,6 +149,7 @@ def main_flow(params) -> None:
     # create the spark consumer
     spark_session = SparkSession.builder \
             .appName("turnstiles-consumer") \
+            .config("spark.sql.adaptive.enabled", "false") \
             .getOrCreate()                
     
     spark_session.sparkContext.setLogLevel("WARN")
@@ -96,12 +161,11 @@ def main_flow(params) -> None:
     consumer.read_kafka_stream(spark_session) 
     
     # parse the messages
-    df_messages = consumer.parse_messages(schema=turnstiles_schema)
-    write_to_console(df_messages, processing_time=window_duration)
+    df_messages = consumer.parse_messages(schema=turnstiles_schema)    
       
-    df_windowed = consumer.add_by_station(df_messages, window_duration, window_slide)
+    df_windowed = consumer.agg_messages(df_messages, window_duration, window_slide)
         
-    write_to_storage(df_windowed, output_mode='append',processing_time=window_duration)
+    write_to_storage(df=df_windowed, output_mode='append',processing_time=window_duration)
   
     spark_session.streams.awaitAnyTermination()
 
@@ -123,8 +187,8 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
 
-    if (args.master is None):
-        args.master = 'spark://localhost:7077'
+    # if (args.master is None):
+    #     args.master = 'spark://localhost:7077'
 
     main_flow(args)
 
