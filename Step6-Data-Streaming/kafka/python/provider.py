@@ -28,12 +28,12 @@ class Provider:
         exits = str(random.randint(5, 10))
 
         # Generate random ac,units for the same station
-        ac = 'A00' + str(random.randint(1, 2))
+        ca = 'A00' + str(random.randint(1, 2))
         unit = 'R00' + str(random.randint(1, 2))
         station = 'Test-Station' + str(random.randint(1, 2))
 
         # Format the message in CSV format
          # Create a CSV message
-        # headers = 'A/C,UNIT,SCP,STATION,LINENAME,DIVISION,DATE,TIME,DESC,ENTRIES,EXITS,ID,TIMESTAMP\n'
-        message = f'{ac},{unit},02-00-00,{station},456NQR,BMT,{current_date},{current_time},REGULAR,{entries},{exits},{message_id},{ts}'        
+        # headers = 'CA,UNIT,SCP,STATION,LINENAME,DIVISION,DATE,TIME,DESC,ENTRIES,EXITS,ID,TIMESTAMP\n'
+        message = f'{ca},{unit},02-00-00,{station},456NQR,BMT,{current_date},{current_time},REGULAR,{entries},{exits},{message_id},{ts}'        
         return (message_id, message)

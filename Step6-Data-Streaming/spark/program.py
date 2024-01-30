@@ -18,6 +18,7 @@ from pyspark.sql import SparkSession, DataFrame
 import pyspark.sql.functions as F
 from prefect import flow, task
 from prefect_gcp.cloud_storage import GcsBucket
+import pandas as pd
 
 # Local libraries
 from consumer import SparkSettings, SparkConsumer
@@ -77,6 +78,9 @@ def process_mini_batch(df, batch_id, path):
     # Convert to Pandas DataFrame
     df_pandas = df.toPandas()
 
+    # Convert 'DATE' column to keep the same date format
+    df_pandas['DATE'] = pd.to_datetime(df_pandas['DATE'], format='%m-%d-%y').dt.strftime('%m/%d/%Y')
+
     print(df_pandas.head())
 
     # Get the current timestamp
@@ -87,12 +91,19 @@ def process_mini_batch(df, batch_id, path):
     # Write to Storage as CSV.gz    
     file_name = f"batch_{batch_id}_{time}.csv.gz"
     file_path = f"{path}/{file_name}"
-    df_pandas.to_csv(file_path, index=False, compression="gzip")
+    df_pandas.to_csv(file_path, compression="gzip")
 
     # send to the data lake
     stream_write_gcs(file_path, file_name)
 
+@task (name="MTA Spark Data Stream - Aggregate messages", description="Aggregate the data in time windows")
+def aggregate_messages(consumer, df_messages, window_duration, window_slide) -> DataFrame:
+    df_windowed = consumer.agg_messages(df_messages, window_duration, window_slide)
+    return df_windowed
 
+@task (name="MTA Spark Data Stream - Read data stream", description="Read the data stream")
+def read_data_stream(consumer, spark_session) -> None:
+    consumer.read_kafka_stream(spark_session) 
 
 # write a streaming data frame to storage ./storage
 @task (name="MTA Spark Data Stream - Write to Storage", description="Write batch to the data lake")
@@ -101,7 +112,7 @@ def write_to_storage(df: DataFrame, output_mode: str = 'append', processing_time
         Output stream values to the console
     """   
     df_csv = df.select(
-        "AC", "UNIT", "SCP", "STATION", "LINENAME", "DIVISION", "DATE", "DESC", "TIME","ENTRIES", "EXITS"
+        "CA", "UNIT", "SCP", "STATION", "LINENAME", "DIVISION", "DATE", "TIME", "DESC","ENTRIES", "EXITS"
     )
 
     path = "./storage/"     
@@ -158,12 +169,14 @@ def main_flow(params) -> None:
     consumer = SparkConsumer(spark_settings, topic, group_id, client_id)
 
     # set the data frame stream
-    consumer.read_kafka_stream(spark_session) 
+    read_data_stream(consumer, spark_session)
+    # consumer.read_kafka_stream(spark_session) 
     
     # parse the messages
     df_messages = consumer.parse_messages(schema=turnstiles_schema)    
       
-    df_windowed = consumer.agg_messages(df_messages, window_duration, window_slide)
+    df_windowed = aggregate_messages(consumer, df_messages, window_duration, window_slide)
+    # df_windowed = consumer.agg_messages(df_messages, window_duration, window_slide)
         
     write_to_storage(df=df_windowed, output_mode='append',processing_time=window_duration)
   

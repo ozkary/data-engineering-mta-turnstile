@@ -84,8 +84,7 @@ class SparkConsumer:
         self.stream = None
         self.data_frame = None   
         self.kafka_options = self.settings.kafka_options     
-              
-        
+                  
     def read_kafka_stream(self, spark: SparkSession) -> None:
         """
         Reads the Kafka Topic.
@@ -114,7 +113,7 @@ class SparkConsumer:
             
         # remove quotes from TIMESTAMP column
         df = df.withColumn("TIMESTAMP", F.regexp_replace(F.col("TIMESTAMP"), '"', ''))    
-        df = df.withColumn("AC", F.regexp_replace(F.col("AC"), '"', ''))    
+        df = df.withColumn("CA", F.regexp_replace(F.col("CA"), '"', ''))    
         
         result = df.select([field.name for field in schema])    
 
@@ -123,8 +122,7 @@ class SparkConsumer:
         result.printSchema()
         
         return result
-
-        
+    
     def agg_messages(self, df: DataFrame,  window_duration: str, window_slide: str) -> DataFrame:
         """
             Window for n minutes aggregations group by by AC, UNIT, STATION, DATE, DESC
@@ -135,7 +133,7 @@ class SparkConsumer:
 
         df_windowed = df \
             .withWatermark("TS", window_duration) \
-            .groupBy(F.window("TS", window_duration, window_slide),"AC", "UNIT","SCP","STATION","LINENAME","DIVISION", "DATE", "DESC") \
+            .groupBy(F.window("TS", window_duration, window_slide),"CA", "UNIT","SCP","STATION","LINENAME","DIVISION", "DATE", "DESC") \
             .agg(
                 F.sum("ENTRIES").alias("ENTRIES"),
                 F.sum("EXITS").alias("EXITS")
@@ -143,7 +141,7 @@ class SparkConsumer:
             .withColumn("END", F.col("window.end")) \
             .withColumn("TIME", F.date_format("window.end", "HH:mm:ss")) \
             .drop("window") \
-            .select("AC","UNIT","SCP","STATION","LINENAME","DIVISION","DATE","DESC","TIME","START","END","ENTRIES","EXITS")
+            .select("CA","UNIT","SCP","STATION","LINENAME","DIVISION","DATE","DESC","TIME","START","END","ENTRIES","EXITS")
         
         df_windowed.printSchema()            
 
