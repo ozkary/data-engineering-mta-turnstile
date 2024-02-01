@@ -10,8 +10,6 @@ Use the Confluent Platform components directly.
 
 > Note:  Make sure to set the confluent platform directory as an environment variable
 
-
-
 1. **Start Zookeeper:**
    ```bash
    zookeeper-server-start $CONFLUENT_HOME/etc/kafka/zookeeper.properties

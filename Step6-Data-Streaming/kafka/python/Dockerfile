@@ -1,25 +1,27 @@
-# Use an official Python runtime as a base image
-FROM python:3.8
+# Use a base image with Prefect and Python
+FROM prefecthq/prefect:2.7.7-python3.9
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements.txt file into the container at /app
-COPY requirements.txt /app/
+# Copy the requirements file to the working directory
+COPY requirements.txt .
 
-# Create and activate a virtual environment
-RUN python -m venv .venv
-ENV PATH="/app/.venv/bin:$PATH"
+# Install dependencies
+RUN pip install -r requirements.txt --trusted-host pypi.python.org --no-cache-dir
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy the entire current directory into the container
+COPY *.py .
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Specify the default command to run when the container starts
+CMD ["python3", "program.py", "--topic","mta-turnstile","--config","/config/docker-kafka.properties"]
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Create a directory for Kafka configuration
+RUN mkdir -p /config
 
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+# Create a volume mount for Kafka configuration
+VOLUME ["/config"]
+
+# push the ~/.kafka/docker-kafka.properties to the target machine
+# run as to map the volume to the target machine:
+# docker run -v ~/.kafka:/config your-image-name

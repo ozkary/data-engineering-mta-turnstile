@@ -26,11 +26,6 @@ from settings import get_block_name, get_prefix
 from schema import turnstiles_schema
 
 
-# Local Module Imports
-PROJECT = 'ozkary-de-101'
-BUCKET = 'gs://ozkary_data_lake_ozkary-de-101/turnstile'
-
-
 def write_to_console(df: DataFrame, output_mode: str = 'append', processing_time: str = '15 seconds') -> None:
     """
         Output stream values to the console

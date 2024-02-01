@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# run this on the target VM
 CONFIG_DIR=~/.kafka
 CONFIG_FILE=$CONFIG_DIR/docker-kafka.properties
 
@@ -9,7 +9,7 @@ DOCKER_KAFKA_HOST=localhost
 # Check if the .kafka directory exists
 if [ ! -d "$CONFIG_DIR" ]; then
     echo "Creating $CONFIG_DIR directory..."
-    # mkdir -p "$CONFIG_DIR"
+    mkdir -p "$CONFIG_DIR"
 fi
 
 

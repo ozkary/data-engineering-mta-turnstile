@@ -1,0 +1,24 @@
+name: Deploy App Images
+
+   on:
+     push:
+       branches:
+         - deploy-apps
+
+   jobs:
+     deploy:
+       runs-on: ubuntu-latest
+       
+       env:
+        PROJECT_FOLDER: "Step6-Data-Streaming"
+
+       steps:
+         - name: Checkout code
+           uses: actions/checkout@v2
+         - name: Building App Images
+            run: |
+             ./$PROJECT_FOLDER/build_push_apps.sh
+
+         - name: Deploy App Images
+           run: |
+             ./$PROJECT_FOLDER/deploy_publisher_consumer_apps.sh

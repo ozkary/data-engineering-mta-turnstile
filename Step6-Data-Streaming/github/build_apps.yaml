@@ -1,0 +1,37 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_FOLDER: "Step6-Data-Streaming"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-docker@v2
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push Kafka Docker image
+        run: docker build -t ozkary/kafka:mta-de-101 -f ./$DOCKER_FOLDER/kafka/python/Dockerfile ./$DOCKER_FOLDER/kafka/python/
+          
+      - name: Build and push Spark Docker image
+        run: docker build -t ozkary/spark:mta-de-101 -f ./$DOCKER_FOLDER/spark/Dockerfile ./$DOCKER_FOLDER/spark/
+          
+      - name: Push Docker images
+        run: |
+          docker push ozkary/kafka:mta-de-101
+          docker push ozkary/spark:mta-de-101
+
+      - name: Logout from Docker Hub
+        run: docker logout

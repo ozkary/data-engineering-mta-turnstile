@@ -22,18 +22,19 @@ then
 	exit 1
 fi
 PYTHON_JOB=$1
+CONFIG_FILE=$2
 
-if [ -z $2 ]
+if [ -z $3 ]
 then
 	EXEC_MEM="1G"
 else
-	EXEC_MEM=$2
+	EXEC_MEM=$3
 fi
 
 # spark-submit program.py --topic mta-turnstile --group turnstile --client appTurnstile --config ~/.kafka/azure.properties
 spark-submit --num-executors 2 \
 	         --executor-memory $EXEC_MEM --executor-cores 1 \
              --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.2,org.apache.spark:spark-avro_2.12:3.3.2,org.apache.spark:spark-streaming-kafka-0-10_2.12:3.3.2 \
-             $PYTHON_JOB --topic mta-turnstile --group mta --client appTurnstile --config ~/.kafka/localhost-nosasl.properties 
+             $PYTHON_JOB --topic mta-turnstile --group mta --client appTurnstile --config $CONFIG_FILE
 
 # run as: bash submit-program.sh program.py

@@ -4,7 +4,7 @@
 cd docker
 
 # Start Spark Master and Spark Worker
-docker-compose up -f docker-bitnami-compose.yml -d spark-master spark-worker
+docker-compose up -f docker-compose-bitnami.yml -d spark-master spark-worker
 
 # Wait for Spark Master and Worker to be ready (adjust sleep time as needed)
 sleep 15
