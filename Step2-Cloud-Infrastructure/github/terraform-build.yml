@@ -1,0 +1,29 @@
+name: Terraform Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+    
+    - name: Terraform Init
+       env:        
+        GOOGLE_APPLICATION_CREDENTIALS:  ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      run: |
+        cd Step2-Cloud-Infrastructure/terraform
+        terraform init
+    
+    - name: Terraform Apply
+      run: |
+        cd path/to/terraform/project
+        terraform apply -auto-approve
