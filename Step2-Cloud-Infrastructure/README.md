@@ -120,6 +120,7 @@ $ mv ~/Downloads/{xxxxxx}.json ~/.gcp/{acc_credentials}.json
   - <a href="https://cloud.google.com/sdk/docs/install-sdk" target="_new">Follow the instruction here</a>
 - Validate the installation and login to GCP with the following commands
 ```
+$ gcloud --version
 $ echo 'export GOOGLE_APPLICATION_CREDENTIALS="~/.gcp/{acc_credentials}.json"' >> ~/.bashrc
 $ export GOOGLE_APPLICATION_CREDENTIALS="~/.gcp/{acc_credentials}.json"
 $ gcloud auth application-default login
