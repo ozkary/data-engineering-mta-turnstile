@@ -18,9 +18,18 @@ Use this project Wiki for installation and configuration information
 ### Announcement and Updates
 
 > 👉 Join this list to receive updates on new content about Data Engineering  [Sign up here](https://maven.com/forms/56ae79)  
-> 👉 Follow us on [Twitter](https://twitter.com/ozkary)  
-> 👉 [Data Engineering Fundamental Series](https://www.ozkary.com/2023/03/data-engineering-process-fundamentals.html)    
-> 👉 [Data Engineering Fundamental YouTube Video](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K)    
+> 👉 Follow us on [Twitter](https://twitter.com/ozkary "Follow Oscar D. Garcia, ozkary on Twitter")  
+> 👉 [Data Engineering Process Fundamental Series](https://www.ozkary.com/2023/03/data-engineering-process-fundamentals.html "Data Engineering Process Fundamental Series by Oscar D. Garcia, ozkary")    
+> 👉 [Data Engineering Process Fundamental YouTube Video](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K "Data Engineering Process Fundamental YouTube Video by Oscar D. Garcia, ozkary")    
+> 👉 [Data Engineering Process Fundamental Book on Amazon](https://www.amazon.com/Data-Engineering-Process-Fundamentals-Hands/dp/B0CV7TPSNB "Data Engineering Process Fundamental Book on Amazon by Oscar D. Garcia, ozkary")    
+
+
+<div><h5>Data Engineering Process Fundamentals: Master the Fundamentals of Data Engineering with a Hands-on Approach</h5>
+<a href="https://www.amazon.com/Data-Engineering-Process-Fundamentals-Hands/dp/B0CV7TPSNB" target="_amazon">
+<img src="https://m.media-amazon.com/images/I/41+MsbOIV1L.jpg" alt="Data Engineering Process Fundamentals: Master the Fundamentals of Data Engineering with a Hands-on Approach" style="width:150px;height:auto;border:0" />
+</a></div>
+
+
 
 ## Problem Statement
 
