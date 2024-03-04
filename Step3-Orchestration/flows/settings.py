@@ -9,7 +9,7 @@ from datetime import date, datetime
 
 settings = {
         'min_date': '2023-01-01',
-        'max_date': '2024-01-01',
+        'max_date': '2025-01-01',
         'gcs_block_name': 'blk-gcs-name',
         'src_url':'http://web.mta.info/developers/data/nyct/turnstile',
         'prefix': 'turnstile'

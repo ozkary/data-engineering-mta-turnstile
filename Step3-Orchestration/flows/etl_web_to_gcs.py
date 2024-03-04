@@ -23,7 +23,7 @@ from datetime import timedelta, date
 def write_gcs(local_path: Path, file_name: str, prefix: str) -> None:
     
     """
-        Upload local parquet file to GCS
+        Upload local parquet/csv file to GCS
         Args:
             path: File location
             prefix: the folder location on storage
@@ -210,8 +210,8 @@ if __name__ == '__main__':
 
 # Link files have this format
 # http://web.mta.info/developers/data/nyct/turnstile/turnstile_230318.txt
-# files are published every Sunday format turnstile_yyMMdd.txt
-# python3 etl_web_to_gcs.py --year 2023 --month 3 --day 
+# files are published every Saturday format turnstile_yyMMdd.txt
+# python3 etl_web_to_gcs.py --year 2024 --month 1 --day 
 # check files in gcs gs://ozkary-mta-data/mta/turnstile/ 
 # use the gsutil for gcs and gcloud for all cloud related commands
 # gsutil ls -l gs://ozkary_data_lake_ozkary-de-101/turnstile/
