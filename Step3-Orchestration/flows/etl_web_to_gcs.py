@@ -216,3 +216,5 @@ if __name__ == '__main__':
 # use the gsutil for gcs and gcloud for all cloud related commands
 # gsutil ls -l gs://ozkary_data_lake_ozkary-de-101/turnstile/
 # gcloud storage ls --recursive gs://ozkary_data_lake_ozkary-de-101/
+# check flows:
+# $ prefect flow-run ls
