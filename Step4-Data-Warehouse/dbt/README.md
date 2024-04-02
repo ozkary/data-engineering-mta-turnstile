@@ -38,40 +38,46 @@ $ dbt deps
         version: 0.8.0
  ```
 
-- to create the seed tables/lookup with a CSV file
+- To preview the build command with a row count limit
 
+```bash
+$ dbt show dim_station limit 100
 ```
+
+- To create the seed tables/lookup with a CSV file
+
+```bash
 $ dbt seed --select remote_booth_station
 ```
 
 - Run all the models using this pattern
-```
+```bash
 $ dbt run --m <model.sql>
 ```
 
 - Test your data
-```
+```bash
 $ dbt test
 ```
 
 - This command runs the seed, run and test at the same time
-```
+```bash
 $ dbt build --select <model.sql>
 ```
 
 - Builds the model and uses variables to allow for the full dataset to be created
 
-```
+```bash
 $ dbt build --select <model.sql> --var 'is_test_run: false'
 ```  
 
 - Generate documentation 
-```
+```bash
 $ dbt docs generate
 ```
 
 - To see the project folder configuration
-```
+```bash
 $ dbt debug --config-dir
 ```
 
