@@ -218,3 +218,5 @@ if __name__ == '__main__':
 # gcloud storage ls --recursive gs://ozkary_data_lake_ozkary-de-101/
 # check flows:
 # $ prefect flow-run ls
+    
+# python3 etl_web_to_gcs.py --year 2024 --month 2 --day 10
