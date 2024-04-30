@@ -122,6 +122,7 @@ $ mv ~/Downloads/{xxxxxx}.json ~/.gcp/{acc_credentials}.json
 ```
 $ gcloud --version
 $ echo 'export GOOGLE_APPLICATION_CREDENTIALS="~/.gcp/{acc_credentials}.json"' >> ~/.bashrc
+$ echo 'export GOOGLE_PROJECT_NAME="YOUR-PROJECT-NAME"' >> ~/.bashrc
 $ export GOOGLE_APPLICATION_CREDENTIALS="~/.gcp/{acc_credentials}.json"
 $ gcloud auth application-default login
 ```
