@@ -67,7 +67,7 @@ def write_local(df: pd.DataFrame, folder: str, file_path: Path) -> Path:
         
     return file_path
 
-@flow(name='etl_web_to_local', description='Download MTA File in chunks')
+@flow(name='MTA : etl_web_to_local', description='Download MTA File in chunks')
 def etl_web_to_local(name: str, prefix: str) -> Path:
     """
        Download a file    
@@ -219,4 +219,4 @@ if __name__ == '__main__':
 # check flows:
 # $ prefect flow-run ls
     
-# python3 etl_web_to_gcs.py --year 2024 --month 2 --day 10
+# python3 etl_web_to_gcs.py --year 2024 --month 2 --day 17

@@ -1,4 +1,4 @@
-# Step 3 Data Orchestration
+# Step 3 Data Pipeline and Orchestration
 
 At this point of the project, we understand the source and structure of the data. We also have provisioned a Data Lake (DL) to store all the files that we need to download. We are ready to orchestrate a data pipeline that can enable us to process multiple files and save them to the DL using a compressed or parquet data format. Let’s first review some of these concepts.
 
