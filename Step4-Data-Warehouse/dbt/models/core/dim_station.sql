@@ -12,7 +12,7 @@ select
     ns.station_name
 from stations ns
 {% if is_incremental() %}
-     -- logic for incremental models this = dim_station table
+     --jinja logic for incremental models this = dim_station table
     left outer join {{ this }} dim
         on ns.station_id = dim.station_id
     where dim.station_id is null     
