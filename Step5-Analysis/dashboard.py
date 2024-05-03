@@ -84,6 +84,7 @@ app.layout = html.Div([
 
 ])
 
+# function decorator
 # Callback to update the score cards based on selected date range
 @app.callback(
      [Output('total-entries', 'children'),
@@ -97,7 +98,7 @@ app.layout = html.Div([
     [Input('date-range', 'start_date'),
      Input('date-range', 'end_date')]
 )
-
+# Application refresh handler
 def update_dashboard(start_date, end_date):
     filtered_data = data[(data['created_dt'] >= start_date) & (data['created_dt'] <= end_date)]   
         
