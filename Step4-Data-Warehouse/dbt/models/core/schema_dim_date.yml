@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: Dimension table for dates with relevant attributes.
+    columns:
+      - name: date_id
+        description: Surrogate key for the date.
+        tests:
+          - unique:
+              severity: error  # Change to "error" for stricter enforcement
+          - not_null:
+              severity: error  # Change to "error" for stricter enforcement
+      - name: full_date
+        description: The full date in YYYY-MM-DD format.
+        tests:
+          - not_null:
+              severity: error  # Change to "error" for stricter enforcement
+      - name: year
+        description: The year extracted from the full_date.
+        tests:
+          - not_null:
+              severity: error  # Change to "error" for stricter enforcement
+      - name: quarter
+        description: The quarter (1-4) extracted from the full_date.
+        tests:
+          - not_null:
+              severity: error  # Change to "error" for stricter enforcement
+      - name: month
+        description: The month (1-12) extracted from the full_date.
+        tests:
+          - not_null:
+              severity: error  # Change to "error" for stricter enforcement
+      - name: month_name
+        description: The name of the month (e.g., January).
+      - name: day
+        description: The day of the month (1-31).
+        tests:
+          - not_null:
+              severity: error  # Change to "error" for stricter enforcement
+      - name: day_of_week
+        description: The day of the week (1-7, Sunday=1).
+        tests:
+          - not_null:
+              severity: error  # Change to "error" for stricter enforcement
+      - name: day_of_week_name
+        description: The name of the day of the week (e.g., Sunday).
+      - name: is_weekend
+        description: Boolean flag indicating if the date is a weekend (true) or weekday (false).
+        tests:
+          - not_null:
+              severity: error  # Change to "error" for stricter enforcement
+      - name: is_holiday  # Optional
+        description: Boolean flag indicating if the date is a holiday (optional).
+      - name: fiscal_year  # Optional
+        description: The fiscal year associated with the date (optional).
+      - name: fiscal_quarter  # Optional
+        description: The fiscal quarter associated with the date (optional).

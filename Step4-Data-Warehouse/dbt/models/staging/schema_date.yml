@@ -1,0 +1,26 @@
+version: 2
+
+# Define the source schema (replace with your actual schema name)
+source: schema_name
+
+# Define the model
+model: date_dimension
+
+# Define the table with columns and data types
+upstreams: []  # No upstream tables for the date dimension
+
+# Define columns with appropriate data types
+columns:
+  - date_id: INT not null primary key
+  - full_date: DATE not null
+  - year: INT not null
+  - quarter: INT not null
+  - month: INT not null
+  - month_name: STRING not null
+  - day: INT not null
+  - day_of_week: INT not null
+  - day_of_week_name: STRING not null
+  - is_weekend: BOOLEAN not null
+  - is_holiday: BOOLEAN null  # Optional
+  - fiscal_year: INT  null # Optional
+  - fiscal_quarter: INT null # Optional
