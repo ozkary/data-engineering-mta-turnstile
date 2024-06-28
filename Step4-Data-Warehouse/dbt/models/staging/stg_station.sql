@@ -1,5 +1,5 @@
 {{ config(materialized='view') }}
-
+-- CTE common table expression
 with stations as 
 (
   select 

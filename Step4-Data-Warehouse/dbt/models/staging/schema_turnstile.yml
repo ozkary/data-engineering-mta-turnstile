@@ -39,8 +39,8 @@ models:
           - name: division
             description: The subway division          
           - name: created_dt
-            description: The date time for the activity
+            description: The date time for the activity (timestamp)
           - name: entries
-            description: The number of entries
+            description: The number of entries (integer)
           - name: exits
-            description: the number of exits         
+            description: the number of exits  (integer)       
