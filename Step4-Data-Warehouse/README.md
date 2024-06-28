@@ -146,7 +146,7 @@ The schema.yml files are used as configurations to define the schema of the fina
 
 Data lineage is the documentation and tracking of the flow of data from its origin to its destination, including all the intermediate processes and transformations that it undergoes. In this case, we show how the external table is the source for the fact table and the dimension table dependencies.
 
-![ozkary-data-engineering-dbt-model-lineage](../images/mta-bdt-lineage.png "ozkary dbt model lineage")
+![ozkary-data-engineering-dbt-model-lineage](../images/ozkary-data-engineering-process-data-warehouse-lineage.png "ozkary dbt model lineage")
 
 ### dbt Commands on the dbt cloud command line (browser)
 
