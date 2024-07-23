@@ -21,7 +21,7 @@ class SparkSettings:
     def __init__(self, config_path: str, topic: str, group_id: str, client_id: str) -> None:
         self.settings = read_config(config_path)
         
-        use_sasl = "sasl.mechanism" in self.settings and self.settings["sasl.mechanism"] is not None
+        use_sasl = "sasl.mechanisms" in self.settings and self.settings["sasl.mechanisms"] is not None
                 
         self.kafka_options = {
             "kafka.bootstrap.servers": self.settings["bootstrap.servers"],
@@ -38,18 +38,19 @@ class SparkSettings:
         }          
 
         if use_sasl:
+            self.kafka_options = {**self.kafka_options, **self.settings}
             # set the JAAS configuration only when use_sasl is True
-            sasl_config = f'org.apache.kafka.common.security.plain.PlainLoginModule required serviceName="kafka" username="{self.settings["sasl.username"]}" password="{self.settings["sasl.password"]}";'
+            # sasl_config = f'org.apache.kafka.common.security.plain.PlainLoginModule required serviceName="kafka" username="{self.settings["sasl.username"]}" password="{self.settings["sasl.password"]}";'
 
-            login_options = {
-                "kafka.sasl.mechanisms": self.settings["sasl.mechanism"],
-                "kafka.security.protocol": self.settings["security.protocol"],
-                "kafka.sasl.username": self.settings["sasl.username"],
-                "kafka.sasl.password": self.settings["sasl.password"],  
-                "kafka.sasl.jaas.config": sasl_config          
-            }
-            # merge the login options with the kafka options
-            self.kafka_options = {**self.kafka_options, **login_options}
+            # login_options = {
+            #     "kafka.sasl.mechanisms": self.settings["sasl.mechanism"],
+            #     "kafka.security.protocol": self.settings["security.protocol"],
+            #     "kafka.sasl.username": self.settings["sasl.username"],
+            #     "kafka.sasl.password": self.settings["sasl.password"],  
+            #     "kafka.sasl.jaas.config": sasl_config          
+            # }
+            # # merge the login options with the kafka options
+            # self.kafka_options = {**self.kafka_options, **login_options}
 
         
     def __getitem__(self, key):

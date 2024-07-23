@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 
 # Navigate to the kafka directory
 cd kafka/python
@@ -15,8 +16,11 @@ source .venv/bin/activate
 # Install dependencies from requirements.txt
 pip install -r requirements.txt
 
-# Run the Kafka producer
+# Run the Kafka producer locally
 python3 program.py --topic mta-turnstile --config ~/.kafka/docker-kafka.properties
+
+# Run the Kafka producer cloud (confluent)
+# python3 program.py --topic mta-turnstile --config ~/.kafka/confluent.properties
 
 # Display a message indicating completion
 echo "Kafka producer started within the virtual environment."
