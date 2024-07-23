@@ -16,7 +16,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # Run your Spark program using spark-submit
-bash submit-program.sh program.py
+bash submit-program.sh program.py ~/.kafka/docker-kafka.properties
 
 # Display a message indicating completion
 echo "Spark program submitted to Spark cluster within the virtual environment."
