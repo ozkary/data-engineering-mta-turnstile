@@ -3,10 +3,15 @@ version: 2
 models:
     - name: stg_booth
       description: >
-        Subway booth information
+        Subway booth information      
+      config:
+        version: 1.1.0
+        contract:
+          enforced: true
       columns:
           - name: booth_id
             description: The booth identifier
+            data_type: string
             tests:
                 - unique:
                     severity: warn
@@ -14,8 +19,11 @@ models:
                     severity: warn
           - name: remote
             description: the remote gate name
+            data_type: string
           - name: booth_name
             description: the station booth
+            data_type: string
           - name: station_name
             description: the station name
+            data_type: string
                     
