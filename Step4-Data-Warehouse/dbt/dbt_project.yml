@@ -38,6 +38,19 @@ models:
           materialized: view
       core:
           materialized: table
+      +meta:
+          owner: engineering_team
+          steward: analytics_team
+          responsibilities: ingestion, validation, analytics
+      staging:
+          +tags:
+            - "transformed"
+            - "no_pii"
+      core:
+          +tags:
+            - "published"
+            - "no_pii"
+            
 
 seeds: 
     mta_de:
