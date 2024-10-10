@@ -1,4 +1,30 @@
-# Data Engineering - Metropolitan Transportation Authority (MTA) Subway Turnstile Data Analysis
+# Introduction to Data Engineering Process Fundamentals 
+
+Welcome to the Data Engineering MTA Turnstile project! This repository leverages real-world MTA Turnstile data, offering a comprehensive guide to data engineering concepts through hands-on experience.
+
+## What's Inside?
+
+- Extensive Book: Data Engineering Process Fundamentals. Dive deep into the core concepts of data engineering with this detailed guide.
+
+- YouTube Videos: Follow along with detailed video tutorials that explain each step and concept in detail.
+
+- Comprehensive Codebase: Our codebase features:
+
+- Python: Core scripts and data processing.
+- Jupyter Notebooks: Interactive data exploration and visualization.
+- SQL: Database queries and transformations.
+- Looker Studio: Advanced analytics and reporting.
+- Cloud Data Lake: Efficient and scalable data storage.
+- Data Warehouse: Structured data management.
+- Other Cloud Technologies: Utilize various cloud-based tools to implement your solution step-by-step.
+  
+- ## Why Use This Repository?
+  
+- Real-World Application: Based on actual MTA Turnstile data, providing a practical learning experience.
+- Process-Oriented Approach: Implement data engineering using a systematic, process-oriented approach for better clarity and efficiency.
+- Step-by-Step Implementation: Follow along with the book and videos to implement each component of the solution.
+- Free and Accessible: Leverage cloud technologies that are freely available, ensuring you can recreate and extend the project without barriers.
+   
 <p>
 <a target="_ozkary" style="font-size:1.5rem;margin-right:20px;" href="https://www.ozkary.com">
 Written by Oscar Garcia
@@ -23,13 +49,27 @@ Use this project Wiki for installation and configuration information
 > 👉 [Data Engineering Process Fundamental YouTube Video](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K "Data Engineering Process Fundamental YouTube Video by Oscar D. Garcia, ozkary")    
 > 👉 [Data Engineering Process Fundamental Book on Amazon](https://www.amazon.com/Data-Engineering-Process-Fundamentals-Hands/dp/B0CV7TPSNB "Data Engineering Process Fundamental Book on Amazon by Oscar D. Garcia, ozkary")    
 
-
 <div><h5>Data Engineering Process Fundamentals: Master the Fundamentals of Data Engineering with a Hands-on Approach</h5>
 <a href="https://www.amazon.com/Data-Engineering-Process-Fundamentals-Hands/dp/B0CV7TPSNB" target="_amazon">
 <img src="https://m.media-amazon.com/images/I/41+MsbOIV1L.jpg" alt="Data Engineering Process Fundamentals: Master the Fundamentals of Data Engineering with a Hands-on Approach" style="width:150px;height:auto;border:0" />
 </a></div>
 
+## ⭐️ Star Data Engineering MTA Turnstile on GitHub!
 
+If you find this project useful, please consider giving it a ⭐️ on GitHub! Your support helps us grow and reach more developers.
+
+[![Star on GitHub](https://img.shields.io/github/stars/ozkary/data-engineering-mta-turnstile?style=social)](https://github.com/ozkary/data-engineering-mta-turnstile)
+
+**Why Star This Project?**
+- Stay updated with the latest features and improvements.
+- Show your support for open-source development.
+- Help others discover a valuable resource for data engineering.
+
+## How to Star This Project
+1. Visit the [Data Engineering MTA Turnstile GitHub Repository](https://github.com/ozkary/data-engineering-mta-turnstile).
+2. Click on the "Star" button in the top-right corner.
+
+Thank you for your support! 🌟
 
 ## Problem Statement
 
@@ -120,6 +160,7 @@ The following technologies have been used for this project:
   - VM, Storage, BigQuery
 - Prefect Cloud  (Workflow automation)
 - dbt Cloud (Data modeling)
+
 
 
 
