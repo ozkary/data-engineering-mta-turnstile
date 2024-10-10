@@ -5,20 +5,18 @@ Welcome to the Data Engineering MTA Turnstile project! This repository leverages
 ## What's Inside?
 
 - Extensive Book: Data Engineering Process Fundamentals. Dive deep into the core concepts of data engineering with this detailed guide.
-
 - YouTube Videos: Follow along with detailed video tutorials that explain each step and concept in detail.
-
 - Comprehensive Codebase: Our codebase features:
 
-- Python: Core scripts and data processing.
-- Jupyter Notebooks: Interactive data exploration and visualization.
-- SQL: Database queries and transformations.
-- Looker Studio: Advanced analytics and reporting.
-- Cloud Data Lake: Efficient and scalable data storage.
-- Data Warehouse: Structured data management.
-- Other Cloud Technologies: Utilize various cloud-based tools to implement your solution step-by-step.
+  - Python: Core scripts and data processing.
+  - Jupyter Notebooks: Interactive data exploration and visualization.
+  - SQL: Database queries and transformations.
+  - Looker Studio: Advanced analytics and reporting.
+  - Cloud Data Lake: Efficient and scalable data storage.
+  - Data Warehouse: Structured data management.
+  - Other Cloud Technologies: Utilize various cloud-based tools to implement your solution step-by-step.
   
-- ## Why Use This Repository?
+## Why Use This Repository?
   
 - Real-World Application: Based on actual MTA Turnstile data, providing a practical learning experience.
 - Process-Oriented Approach: Implement data engineering using a systematic, process-oriented approach for better clarity and efficiency.
@@ -45,8 +43,8 @@ Use this project Wiki for installation and configuration information
 
 > 👉 Join this list to receive updates on new content about Data Engineering  [Sign up here](https://maven.com/forms/56ae79)  
 > 👉 Follow us on [Twitter](https://twitter.com/ozkary "Follow Oscar D. Garcia, ozkary on Twitter")  
-> 👉 [Data Engineering Process Fundamental Series](https://www.ozkary.com/2023/03/data-engineering-process-fundamentals.html "Data Engineering Process Fundamental Series by Oscar D. Garcia, ozkary")    
-> 👉 [Data Engineering Process Fundamental YouTube Video](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K "Data Engineering Process Fundamental YouTube Video by Oscar D. Garcia, ozkary")    
+> 👉 [Data Engineering Process Fundamental Blog Series](https://www.ozkary.com/2023/03/data-engineering-process-fundamentals.html "Data Engineering Process Fundamental Series by Oscar D. Garcia, ozkary")    
+> 👉 [Data Engineering Process Fundamental YouTube Video Podcast](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K "Data Engineering Process Fundamental YouTube Video by Oscar D. Garcia, ozkary")    
 > 👉 [Data Engineering Process Fundamental Book on Amazon](https://www.amazon.com/Data-Engineering-Process-Fundamentals-Hands/dp/B0CV7TPSNB "Data Engineering Process Fundamental Book on Amazon by Oscar D. Garcia, ozkary")    
 
 <div><h5>Data Engineering Process Fundamentals: Master the Fundamentals of Data Engineering with a Hands-on Approach</h5>
