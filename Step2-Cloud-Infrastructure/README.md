@@ -290,6 +290,93 @@ COPY flows opt/prefect/flows
 
 Essentially, it sets up a container ready to run your Prefect workflows.
 
+### Docker development Lifecycle
+
+```mermaid
+flowchart TD
+    %% Row 1: Authoring and Building
+    A[Start: Author Dockerfile] --> B[Build Image] --> C[Tag Image]
+
+    %% Row 2: Execution and Distribution
+    C --> D[Run Container] --> E[Test & Debug] --> F[Push to Registry] --> G[Deploy or Share]
+
+    %% Row 3: Updating and Cleanup
+    G --> H[Update Code or Dependencies] --> I[Rebuild Image with New Tag] --> J[Run Updated Container] --> K[Stop & Remove Container] --> L[Remove Old Image] --> M[End: Prune Unused Resources]
+
+    %% Styling
+    style A fill:#d3d3d3,stroke:#333,stroke-width:1px,color:#000,font-weight:bold
+    style M fill:#d3d3d3,stroke:#333,stroke-width:1px,color:#000,font-weight:bold
+
+    linkStyle default stroke:#999,stroke-width:1.5px
+
+```
+
+> From the CLI
+
+```bash
+# Step 1: Authenticate with Docker Hub
+docker login --username YOUR_USERNAME --password YOUR_PASSWORD
+# 🔐 Logs you into Docker Hub so you can push images
+
+# Step 2: Build the Docker image from your Dockerfile
+docker image build -t ozkary/prefect:mta-de-101 .
+# Use --no-cache if you want to force a clean rebuild:
+# 🏗️ Builds the image and tags it as ozkary/prefect:mta-de-101
+
+# Step 3: Push the image to Docker Hub
+docker image push ozkary/prefect:mta-de-101
+# 🚀 Publishes your image so others (or your team) can pull and use it
+
+# Step 4: Run the image and execute a Prefect flow (example)
+docker run --name prefect-runner --rm ozkary/prefect:mta-de-101 prefect flow run -p /opt/prefect/flows/etl_web_to_gcs.py --name main_flow
+# ▶️ Runs the flow inside the container and removes (rm) it after execution to keeps your Docker environment clean and stateless
+
+# Step 5: Update the image (when code or dependencies change)
+# Make your changes to flows/ or docker-requirements.txt
+# Then rebuild with a new tag to version your update
+docker image build -t ozkary/prefect:mta-de-102 .
+docker image push ozkary/prefect:mta-de-102
+# 🔁 This creates a new version of your image with updated content
+
+# Step 6: Run the updated image
+docker run --name prefect-runner --rm ozkary/prefect:mta-de-102 prefect flow run -p /opt/prefect/flows/etl_web_to_gcs.py --name main_flow
+# ✅ Verifies that your updates are reflected in the new image
+```
+
+### Docker Operations
+
+> Container: An active, isolated instance of an image running as a lightweight process.
+
+```bash
+# List all running containers
+docker ps
+# 🔍 Shows active containers with names, IDs, and image references
+
+# Stop a running container
+docker stop prefect-runner
+# 🛑 Gracefully halts the container named 'prefect-runner'
+
+# Remove the stopped container
+docker rm prefect-runner
+# 🧹 Deletes the container instance (but not the image)
+
+# List all local images
+docker images
+# 📦 Shows all images stored locally
+
+# Remove a specific image
+docker image rm ozkary/prefect:mta-de-101
+# 🧼 Deletes the image from your local system
+
+# Force-remove the image even if it's in use
+docker image rm -f ozkary/prefect:mta-de-101
+# ⚠️ Use with caution — forcibly deletes the image
+
+# Optional: Clean up everything unused (containers, images, volumes)
+docker system prune -a --volumes
+# 🧽 Deep clean of Docker environment
+
+```
 
 ## How to Run it!
 
