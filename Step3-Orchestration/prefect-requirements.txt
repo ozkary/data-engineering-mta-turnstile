@@ -3,7 +3,7 @@ prefect==2.19.7
 prefect-sqlalchemy==0.2.2
 prefect-gcp[cloud_storage]==0.5.12
 protobuf==4.21.11
-pyarrow==10.0.1
+pyarrow==14.0.1
 pandas-gbq==0.18.1
 psycopg2-binary==2.9.5
 sqlalchemy==1.4.46
