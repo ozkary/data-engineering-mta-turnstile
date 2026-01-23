@@ -1,4 +1,4 @@
 pandas==1.5.2
 prefect-gcp[cloud_storage]==0.2.4
-protobuf==4.21.11
+protobuf==7.34.0rc1
 pyarrow==14.0.1
