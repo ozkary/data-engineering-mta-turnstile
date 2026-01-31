@@ -14,7 +14,7 @@ CREATE OR REPLACE EXTERNAL TABLE `ozkary-de-101`.`mta_data`.`ext_turnstile`(
 ) 
 OPTIONS ( 
   format = 'CSV',
-  uris = ['gs://your-bucket/your-path/ext_turnstile.csv'],
+  uris = ['gs://ozkary_data_lake_ozkary-de-101/turnstile/*.csv.gz'],
   skip_leading_rows = 1,    
   compression = 'GZIP'
 );
