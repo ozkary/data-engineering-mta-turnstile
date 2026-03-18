@@ -721,11 +721,12 @@
         },
         "deepdiff": {
             "hashes": [
-                "sha256:260c16f052d4badbf60351b4f77e8390bee03a0b516246f6839bc813fb429ddf",
-                "sha256:447760081918216aa4fd4ca78a4b6a848b81307b2ea94c810255334b759e1dc3"
+                "sha256:186dcbd181e4d76cef11ab05f802d0056c5d6083c5a6748c1473e9d7481e183e",
+                "sha256:4d22034a866c3928303a9332c279362f714192d9305bac17c498720d095fd1b4"
             ],
-            "markers": "python_version >= '3.8'",
-            "version": "==7.0.1"
+            "index": "pypi",
+            "markers": "python_version >= '3.9'",
+            "version": "==8.6.2"
         },
         "docker": {
             "hashes": [
@@ -1827,6 +1828,14 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==4.1.0"
+        },
+        "orderly-set": {
+            "hashes": [
+                "sha256:46f0b801948e98f427b412fcabb831677194c05c3b699b80de260374baa0b1e7",
+                "sha256:e87185c8e4d8afa64e7f8160ee2c542a475b738bc891dc3f58102e654125e6ce"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==5.5.0"
         },
         "orjson": {
             "hashes": [
