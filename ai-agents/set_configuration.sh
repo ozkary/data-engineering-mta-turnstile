@@ -1,5 +1,18 @@
+#!/bin/bash
+# Usage: source set_configuration.sh [PROJECT_ID]
+
+# 1. Capture the project ID from the first argument
+PROJECT_ID=$1
+
+Validation: Check if the parameter is empty
+if [ -z "$PROJECT_ID" ]; then
+    echo "❌ ERROR: No Project ID provided."
+    echo "Usage: source set_configuration.sh <your-project-id>"
+    # Exit if the script is run directly, or return if sourced
+    (return 0 2>/dev/null) && return 1 || exit 1
+fi
+
 # Set the active project
-export PROJECT_ID="ai-automation-458319"
 gcloud config set project $PROJECT_ID
 
 # Enable APIs (Vertex AI, BigQuery, GCS, and Service Usage)
@@ -34,6 +47,9 @@ done
 gcloud iam service-accounts keys create ~/.gcp/$SA_NAME-key.json \
     --iam-account=$SA_EMAIL
 
+echo "SA Key file: ~/.gcp/$SA_NAME-key.json"
+
+# Change these settings to what you need
 RESOURCE_LABEL="mta_dev_ai"
 REGION="us-central1"
 

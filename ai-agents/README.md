@@ -1,4 +1,4 @@
-# 🤖 AI-Driven Data Engineering: MTA Lake Discovery
+# 🤖 AI-Driven Data Engineering
 
 
 This repository contains a framework for automating **Data Lake discovery** and **Warehouse orchestration** using the **Model Context Protocol (MCP)** and Google’s **Agent Development Kit (ADK)**.
@@ -21,11 +21,11 @@ In this architecture, we move away from hardcoded, brittle ETL pipelines. Instea
 
 ### 🚀 Getting Started
 
-- **Initialize Environment**: Run `source set_configuration.sh` to set your Project ID, Region, and local Python paths.
+- **Initialize Environment**: Run `source set_configuration.sh` to set your Project ID, Region, service account.
 - **Open the virtual environment**:  Using pipenv open a shell `pipenv shell` and install dependencies `pipenv install`
 - **Run the Pipeline**: Open `agentic_pipeline.ipynb` and execute the cells to trigger the **Discovery Agent**. It will find MTA `.gz` files create views and tables and propose a BigQuery `MERGE` strategy for the incremental updates.
 
-> **Infrastructure Requirements:** To execute this framework, you must have an active **Google Cloud Project**, a **Service Account** configured,** BigQuery dataset** and **storage bucket** with some files.
+> **Infrastructure Requirements:** To execute this framework, you must have an active **Google Cloud Project**, a **Service Account** configured,**BigQuery dataset** and **storage bucket** with some files.
 
 ### 📊 Engineering Governance
 * **Idempotency**: All generated SQL uses `MERGE` or `CREATE IF NOT EXISTS` patterns to ensure safety across multiple runs.
