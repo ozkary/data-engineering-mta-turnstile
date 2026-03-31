@@ -27,10 +27,13 @@ In this architecture, we move away from hardcoded, brittle ETL pipelines. Instea
 
 > **Infrastructure Requirements:** To execute this framework, you must have an active **Google Cloud Project**, a **Service Account** configured,**BigQuery dataset** and **storage bucket** with some files.
 
-### 📊 Engineering Governance
-* **Idempotency**: All generated SQL uses `MERGE` or `CREATE IF NOT EXISTS` patterns to ensure safety across multiple runs.
-* **Observability**: Every pipeline task is instrumented to log results (timestamp, rows affected, status) to the `log_pipelines` table.
-* **Decoupling**: By using MCP, the data tools remain independent of the specific LLM being used (Agnostic Reasoning).
+### 📊 Engineering Governance: Layered Control
+
+We implement a dual-prompt architecture to separate **Infrastructure Policy** from **Developer Intent**.
+
+* **Core Governance (System Prompt):** Defines the "How." It enforces naming conventions (e.g., `sp_` prefixes), and core system requirements.
+* **Task Execution (User Prompt):** Defines the "What." Because the core rules are pre-defined in the System Prompt, user prompts remain brief and focused on specific tasks, such as creating tables or orchestrating procedures.
+* **Outcome:** This separation ensures that every AI-generated artifact is consistent, governed, and meets enterprise standards without requiring the developer to repeat boilerplate requirements.
 
 --- 
 > AI-Driven Architecture 2026.
