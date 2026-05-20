@@ -8,6 +8,12 @@ This repository contains a framework for automating **Data Lake discovery** and 
 ### 🌟 Overview
 In this architecture, we move away from hardcoded, brittle ETL pipelines. Instead, we use an **Agnostic LLM** as a reasoning engine. The agent uses custom tools to explore GCS storage, identify schema patterns, and generate BigQuery orchestration logic dynamically.
 
+### Architecture
+
+![Agentic Data Pipeline](https://www.ozkary.dev/assets/2026/ozkary-architecting-agentic-data-flows-from-datalakes-to-data-warehouse.jpg)
+
+
+
 ### 📂 Repository Structure
 
 | File / Folder | Role | Description |
