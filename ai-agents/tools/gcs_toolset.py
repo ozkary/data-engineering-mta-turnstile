@@ -9,7 +9,7 @@ mcp = FastMCP("GCS_Toolset")
 
 # Initialize GCS Client (Uses GOOGLE_APPLICATION_CREDENTIALS)
 # Ensure your environment variable points to your service account key
-client = storage.Client()
+# client = storage.Client()
 
 @mcp.tool()
 def list_mta_files(bucket_name: str, pattern: str = "*.gz") -> list[str]:
@@ -18,6 +18,7 @@ def list_mta_files(bucket_name: str, pattern: str = "*.gz") -> list[str]:
     Useful for finding specific MTA data batches.
     """
     try:
+        client = storage.Client()
         bucket = client.bucket(bucket_name)
         blobs = client.list_blobs(bucket)
         names = [b.name for b in blobs]
@@ -32,6 +33,7 @@ def read_file_preview(bucket_name: str, file_name: str, limit_bytes: int = 1000)
     Action: Reads a small preview of a file's content to inspect headers or data format.
     """
     try:
+        client = storage.Client()
         bucket = client.bucket(bucket_name)
         blob = bucket.blob(file_name)
         # Download a small chunk to avoid memory issues with large .gz files

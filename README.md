@@ -41,7 +41,7 @@ Use this project Wiki for installation and configuration information
 
 ### Announcement and Updates
 
-> 👉 Join this list to receive updates on new content about Data Engineering  [Sign up here](https://maven.com/forms/56ae79)  
+> 👉 Join out newsletter and get updates on new content about Data Engineering  [Sign up here](https://ozkary.com/newsletter)  
 > 👉 Follow us on [Twitter](https://twitter.com/ozkary "Follow Oscar D. Garcia, ozkary on Twitter")  
 > 👉 [Data Engineering Process Fundamental Blog Series](https://www.ozkary.com/2023/03/data-engineering-process-fundamentals.html "Data Engineering Process Fundamental Series by Oscar D. Garcia, ozkary")    
 > 👉 [Data Engineering Process Fundamental YouTube Video Podcast](https://www.youtube.com/live/14eRohtAE-w?si=8xLECzhfOhBgBB9K "Data Engineering Process Fundamental YouTube Video by Oscar D. Garcia, ozkary")    
